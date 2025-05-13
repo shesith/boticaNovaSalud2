@@ -7,6 +7,7 @@ import { Login } from "./components/Login";
 import { useEffect } from "react";
 import { LoaderProvider } from "./context/loaderContext";
 import { Loader } from "./components/ui/Loader";
+import { ChatBot } from "./components/ui/ChatBot";
 
 function App() {
   const isAuthenticated = () => {
@@ -50,6 +51,7 @@ function App() {
       <LoaderProvider>
         {/* {isAuthenticated() && !isLoginPage && <RenderPrincipal />} */}
         <Loader />
+        <ChatBot />
         <Routes>
           <Route path="/" element={<Login />} />
           <Route element={<PrivateRouteWithLayout />}>

@@ -222,29 +222,28 @@ export const Menu = ({ open, setOpen }) => {
             </svg>
             Proveedores
           </li>
-          <li className="text-red-500 p-2.5 flex justify-center items-center gap-1 rounded-xl mt-8">
-            <button
-              className="flex items-center gap-1 cursor-pointer font-bold "
-              onClick={() => {
-                AlertSquareConfirm({
-                  icon: "warning",
-                  title: "Atención",
-                  text: "¿Estás seguro de que deseas salir?",
-                  showDeny: true,
-                  confirmButtonText: "Salir",
-                  denyButtonText: "Cancelar",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    localStorage.clear();
-                    navigate("/");
-                  }
-                });
-              }}
-            >
-              Salir
-              <LogoutIcon />
-            </button>
-          </li>
+
+          <button
+            className="w-full font-bold text-white bg-red-400 p-2.5 flex justify-center items-center gap-1 rounded-xl mt-8 cursor-pointer hover:bg-red-500 transition-all duration-300 hover:scale-105  hover:shadow-lg hover:shadow-[bg-red-500]/50"
+            onClick={() => {
+              AlertSquareConfirm({
+                icon: "info",
+                title: "Atención",
+                text: "¿Estás seguro de que deseas salir?",
+                showDeny: true,
+                confirmButtonText: "Salir",
+                denyButtonText: "Cancelar",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  localStorage.clear();
+                  navigate("/");
+                }
+              });
+            }}
+          >
+            Salir
+            <LogoutIcon />
+          </button>
         </ul>
       </nav>
     </>
