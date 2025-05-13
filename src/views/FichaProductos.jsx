@@ -19,6 +19,8 @@ export const FichaProductos = () => {
     stock: "",
   });
 
+  const handleChange = (e) => {};
+
   return (
     <div className="flex flex-col">
       <div className="bg-white p-8 rounded-xl">

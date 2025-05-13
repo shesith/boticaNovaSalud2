@@ -1,10 +1,54 @@
-import { ListaProductos } from "./ListaProductos";
+import { getImageUrl } from "../utils/getImageUrl";
+import AddIcon from "@mui/icons-material/Add";
 
 export const HomeAdmin = () => {
   return (
-    <article>
-      <div>
-        <h1>Home de la pagina</h1>
+    <article className="my-8">
+      <div className="grid md:grid-flow-col md:grid-cols-2 gap-4 mb-4">
+        <div className="flex flex-col gap-4">
+          <div className="bg-white p-6 h-full rounded-2xl">
+            <p>Órdenes</p>
+            <span className="font-bold">2,76k</span>
+          </div>
+          <div className="bg-white p-6 h-full rounded-2xl">
+            <p>Beneficios</p>
+            <span className="font-bold">6,24k</span>
+          </div>
+        </div>
+        <div className="bg-white p-6 w-full rounded-2xl">
+          <p>Estadisticas</p>
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="w-full bg-white p-6 rounded-2xl">
+          <p>Ventas</p>
+        </div>
+
+        <div className="relative md:w-fit h-64 rounded-lg overflow-hidden cursor-pointer group">
+          <img
+            src={getImageUrl("add-image", "jpg")}
+            alt="Imagen de fondo"
+            className="w-full h-full object-cover brightness-75"
+          />
+          <div className="absolute inset-0 bg-[#51b4c344] opacity-50"></div>
+          <input
+            type="file"
+            id="fileUpload"
+            className="absolute inset-0 opacity-0 z-10 cursor-pointer"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              console.log("Archivo seleccionado:", file);
+            }}
+          />
+
+          <label
+            htmlFor="fileUpload"
+            className="absolute inset-0 m-auto bg-[#51b4c3] rounded-full p-3 text-white w-14 h-14 flex items-center justify-center z-0"
+          >
+            <AddIcon sx={{ fontSize: "3rem" }} />
+          </label>
+        </div>
       </div>
     </article>
   );

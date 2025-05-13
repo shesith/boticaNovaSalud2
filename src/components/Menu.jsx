@@ -1,10 +1,11 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { getImageUrl } from "../utils/getImageUrl";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { AlertSquareConfirm } from "./ui/AlertSquareConfirm";
 
 export const Menu = ({ open, setOpen }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <>
@@ -52,7 +53,9 @@ export const Menu = ({ open, setOpen }) => {
           <p className="text-xs mb-3 text-[#7b7676]">MÓDULOS</p>
           <NavLink
             to="/home-admin"
-            className="bg-[#51b4c3] p-2.5 cursor-pointer flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50"
+            className={`bg-[#51b4c3] p-2.5 cursor-pointer flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50 ${
+              location.pathname === "/home-admin" ? "bg-[#AFDFDA]" : ""
+            }`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +97,9 @@ export const Menu = ({ open, setOpen }) => {
           </li>
           <NavLink
             to="/lista-productos"
-            className="bg-[#51b4c3] p-2.5 cursor-pointer flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50"
+            className={`bg-[#51b4c3] p-2.5 cursor-pointer flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50 ${
+              location.pathname === "/lista-productos" ? "bg-[#AFDFDA]" : ""
+            }`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +120,9 @@ export const Menu = ({ open, setOpen }) => {
           </NavLink>
           <NavLink
             to="/ficha-productos"
-            className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50"
+            className={`bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50 ${
+              location.pathname === "/ficha-productos" ? "bg-[#AFDFDA]" : ""
+            }`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
