@@ -1,7 +1,11 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { getImageUrl } from "../utils/getImageUrl";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { AlertSquareConfirm } from "./ui/AlertSquareConfirm";
 
 export const Menu = ({ setOpen }) => {
+  const navigate = useNavigate();
+
   return (
     <>
       <div
@@ -11,7 +15,7 @@ export const Menu = ({ setOpen }) => {
       <nav className="bg-white w-65 top-0 left-0 h-full fixed md:static z-50 md:w-90 ">
         <button
           onClick={() => setOpen(false)}
-          className="absolute right-2 top-2 cursor-pointer md:hidden"
+          className="absolute right-2 top-2 cursor-pointer md:hidden "
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -20,10 +24,9 @@ export const Menu = ({ setOpen }) => {
             viewBox="0 0 24 24"
             fill="none"
             stroke="#7b7676"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-x"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <path d="M18 6l-12 12" />
@@ -40,7 +43,10 @@ export const Menu = ({ setOpen }) => {
         </div>
         <ul className="flex-col justify-center px-4 pb-4 text-white">
           <p className="text-xs mb-3 text-[#7b7676]">MÓDULOS</p>
-          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2">
+          <NavLink
+            to="/home-admin"
+            className="bg-[#51b4c3] p-2.5 cursor-pointer flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -57,9 +63,9 @@ export const Menu = ({ setOpen }) => {
               <path d="M9 21v-6a2 2 0 0 1 2 -2h2c.39 0 .754 .112 1.061 .304" />
               <path d="M19 21.5l2.518 -2.58a1.74 1.74 0 0 0 0 -2.413a1.627 1.627 0 0 0 -2.346 0l-.168 .172l-.168 -.172a1.627 1.627 0 0 0 -2.346 0a1.74 1.74 0 0 0 0 2.412l2.51 2.59z" />
             </svg>
-            <NavLink to="/home-admin">Home</NavLink>
-          </li>
-          <li className="bg-[#51b4c3] p-2.5 flex items-center gap-1 rounded-xl mb-2">
+            Home
+          </NavLink>
+          <li className="bg-[#51b4c3] p-2.5 flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -79,7 +85,10 @@ export const Menu = ({ setOpen }) => {
             </svg>
             Productos
           </li>
-          <li className="bg-[#afdfda] p-2.5  flex items-center gap-1 rounded-xl mb-2">
+          <NavLink
+            to="/lista-productos"
+            className="bg-[#51b4c3] p-2.5 cursor-pointer flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -87,18 +96,17 @@ export const Menu = ({ setOpen }) => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-inner-shadow-right"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M18.364 18.364a9 9 0 1 1 -12.728 -12.728a9 9 0 0 1 12.728 12.728z" />
               <path d="M16.243 7.757a6 6 0 0 1 0 8.486" />
             </svg>
-            <NavLink to="/lista-productos">Lista productos</NavLink>
-          </li>
-          <li className="bg-[#afdfda] p-2.5  flex items-center gap-1 rounded-xl mb-2">
+            Lista productos
+          </NavLink>
+          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -106,10 +114,9 @@ export const Menu = ({ setOpen }) => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-inner-shadow-right"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M18.364 18.364a9 9 0 1 1 -12.728 -12.728a9 9 0 0 1 12.728 12.728z" />
@@ -117,7 +124,7 @@ export const Menu = ({ setOpen }) => {
             </svg>
             Ficha productos
           </li>
-          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2">
+          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -125,9 +132,9 @@ export const Menu = ({ setOpen }) => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M11.5 21h-2.926a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304h11.339a2 2 0 0 1 1.977 2.304l-.5 3.248" />
@@ -136,7 +143,7 @@ export const Menu = ({ setOpen }) => {
             </svg>
             Ventas
           </li>
-          <li className="bg-[#afdfda] p-2.5  flex items-center gap-1 rounded-xl mb-2">
+          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -144,10 +151,9 @@ export const Menu = ({ setOpen }) => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-inner-shadow-right"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M18.364 18.364a9 9 0 1 1 -12.728 -12.728a9 9 0 0 1 12.728 12.728z" />
@@ -155,7 +161,7 @@ export const Menu = ({ setOpen }) => {
             </svg>
             Clientes
           </li>
-          <li className="bg-[#afdfda] p-2.5  flex items-center gap-1 rounded-xl mb-2">
+          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -163,10 +169,9 @@ export const Menu = ({ setOpen }) => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-inner-shadow-right"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M18.364 18.364a9 9 0 1 1 -12.728 -12.728a9 9 0 0 1 12.728 12.728z" />
@@ -174,7 +179,7 @@ export const Menu = ({ setOpen }) => {
             </svg>
             Facturación
           </li>
-          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2">
+          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -182,10 +187,9 @@ export const Menu = ({ setOpen }) => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-bell"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
@@ -193,7 +197,7 @@ export const Menu = ({ setOpen }) => {
             </svg>
             Recepción
           </li>
-          <li className="bg-[#afdfda] p-2.5  flex items-center gap-1 rounded-xl mb-2">
+          <li className="bg-[#51b4c3] p-2.5 flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -201,16 +205,38 @@ export const Menu = ({ setOpen }) => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-inner-shadow-right"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M18.364 18.364a9 9 0 1 1 -12.728 -12.728a9 9 0 0 1 12.728 12.728z" />
               <path d="M16.243 7.757a6 6 0 0 1 0 8.486" />
             </svg>
             Proveedores
+          </li>
+          <li className="text-red-500 p-2.5 flex justify-center items-center gap-1 rounded-xl mt-8">
+            <button
+              className="flex items-center gap-1 cursor-pointer"
+              onClick={() => {
+                AlertSquareConfirm({
+                  icon: "warning",
+                  title: "Atención",
+                  text: "¿Estás seguro de que deseas salir?",
+                  showDeny: true,
+                  confirmButtonText: "Salir",
+                  denyButtonText: "Cancelar",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    localStorage.clear();
+                    navigate("/");
+                  }
+                });
+              }}
+            >
+              Salir
+              <LogoutIcon />
+            </button>
           </li>
         </ul>
       </nav>

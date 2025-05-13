@@ -3,6 +3,7 @@ import { HomeAdmin } from "../views/HomeAdmin";
 import { ListaProductos } from "../views/ListaProductos";
 import { Menu } from "./Menu";
 import { useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
 
 export const RenderPrincipal = () => {
   const [open, setOpen] = useState(true);
@@ -16,7 +17,7 @@ export const RenderPrincipal = () => {
     };
 
     window.addEventListener("resize", innerWidth);
-
+    innerWidth();
     return () => {
       window.removeEventListener("resize", innerWidth);
     };
@@ -24,10 +25,10 @@ export const RenderPrincipal = () => {
 
   return (
     <>
-      <div className="flex">
+      <div className="flex h-screen">
         {open ? <Menu setOpen={setOpen} /> : null}
-        <div className="flex justify-center mx-4 w-full">
-          <header className="bg-[#51b4c3] h-10 py-8 px-5 rounded-lg w-full mt-4 flex items-center  justify-between md:justify-end">
+        <div className="flex flex-col w-full px-4">
+          <header className="bg-[#51b4c3] h-10 py-8 px-5 rounded-lg w-full mt-4 flex items-center justify-between md:justify-end">
             <button
               onClick={() => setOpen(true)}
               className="cursor-pointer md:hidden"
@@ -61,6 +62,9 @@ export const RenderPrincipal = () => {
               />
             </div>
           </header>
+          <div className="mt-4">
+            <Outlet />
+          </div>
         </div>
       </div>
     </>
