@@ -224,7 +224,7 @@ export const Menu = ({ open, setOpen }) => {
           </li>
           <li className="text-red-500 p-2.5 flex justify-center items-center gap-1 rounded-xl mt-8">
             <button
-              className="flex items-center gap-1 cursor-pointer"
+              className="flex items-center gap-1 cursor-pointer font-bold "
               onClick={() => {
                 AlertSquareConfirm({
                   icon: "warning",

@@ -60,56 +60,184 @@ export const ListaProductos = () => {
   ];
 
   const columns = [
-    { name: "Código", selector: (row) => row.nombre, sortable: true },
-    { name: "Nombre", selector: (row) => row.email },
-    { name: "Presentación", selector: (row) => row.edad, sortable: true },
-    { name: "Cantidad", selector: (row) => row.edad, sortable: true },
-    { name: "Stock", selector: (row) => row.edad, sortable: true },
-    { name: "Categoría", selector: (row) => row.edad, sortable: true },
-    { name: "Precio U.", selector: (row) => row.edad, sortable: true },
     {
-      name: "Acciones",
-
+      name: "CÓDIGO",
+      selector: (row) => row.edad,
+      center: true,
+      headerStyle: {
+        backgroundColor: "#afdfda",
+        fontWeight: "bold",
+      },
+    },
+    {
+      name: "NOMBRE",
+      selector: (row) => row.nombre,
+      center: true,
+      headerStyle: {
+        fontWeight: "bold",
+        backgroundColor: "#f8f9fa",
+      },
+    },
+    {
+      name: "PRESENTACIÓN",
+      selector: (row) => row.nombre,
+      center: true,
+      headerStyle: {
+        fontWeight: "bold",
+        backgroundColor: "#f8f9fa",
+      },
+    },
+    {
+      name: "CANTIDAD",
+      selector: (row) => row.edad,
+      center: true,
+      sortable: true,
+      headerStyle: {
+        fontWeight: "bold",
+        backgroundColor: "#f8f9fa",
+      },
+    },
+    {
+      name: "STOCK",
+      selector: (row) => row.edad,
+      center: true,
+      sortable: true,
+      headerStyle: {
+        fontWeight: "bold",
+        backgroundColor: "#f8f9fa",
+      },
+    },
+    {
+      name: "CATEGORÍA",
+      selector: (row) => row.nombre,
+      center: true,
+      sortable: true,
+      headerStyle: {
+        fontWeight: "bold",
+        backgroundColor: "#f8f9fa",
+      },
+    },
+    {
+      name: "PRECIO U.",
+      selector: (row) => `$${row.edad}`,
+      center: true,
+      headerStyle: {
+        paddingRight: "0",
+        fontWeight: "bold",
+        backgroundColor: "#f8f9fa",
+      },
+    },
+    {
+      name: "ACCIONES",
+      center: true,
       cell: (row) => (
         <div className="flex gap-2">
           <button
             onClick={() => setOpenModal({ ...openModal, editar: true })}
-            className="bg-green-500 text-white border-none px-2 py-1 rounded cursor-pointer"
+            className="bg-green-500 hover:bg-green-600 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
-            <EditIcon />
+            <EditIcon fontSize="small" />
           </button>
           <button
             onClick={() => eliminarProducto(row.id)}
-            className="bg-red-600 text-white border-none px-2 py-1 rounded cursor-pointer"
+            className="bg-red-600 hover:bg-red-700 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
-            <DeleteForeverIcon />
+            <DeleteForeverIcon fontSize="small" />
           </button>
         </div>
       ),
+      headerStyle: {
+        fontWeight: "bold",
+        backgroundColor: "#f8f9fa",
+      },
     },
   ];
 
   return (
     <>
-      <article className="container mx-auto">
-        <h2 className="text-lg">Lista de productos</h2>
-        <div className="flex justify-end mb-4">
-          <Button
-            sx={{
-              backgroundColor: "#51B4C3",
-            }}
-            onClick={() => setOpenModal({ ...openModal, agregar: true })}
-            variant="contained"
-          >
-            <AddIcon />
-            Agregar
-          </Button>
+      <article className="container mx-auto px-4 py-6">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-800">
+            LISTA DE PRODUCTOS
+          </h2>
+          <div className="flex gap-4">
+            <Button
+              startIcon={<AddIcon />}
+              onClick={() => setOpenModal({ ...openModal, agregar: true })}
+              variant="contained"
+              sx={{
+                backgroundColor: "#51B4C3",
+                "&:hover": {
+                  backgroundColor: "#3a9ca8",
+                },
+              }}
+            >
+              Agregar
+            </Button>
+          </div>
         </div>
+
         <DataTable
-          className="shadow-lg"
-          title="Usuarios"
           columns={columns}
           data={data}
+          customStyles={{
+            table: {
+              style: {
+                border: "1px solid #afdfda",
+                borderRadius: "8px",
+                overflow: "hidden",
+              },
+            },
+            head: {
+              style: {
+                borderBottom: "1px solid #afdfda",
+              },
+            },
+            headCells: {
+              style: {
+                fontSize: "14px",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+                backgroundColor: "#afdfda",
+                color: "#333",
+                padding: "12px 8px",
+                borderRight: "1px solid #afdfda",
+                "&:last-child": {
+                  borderRight: "none",
+                },
+              },
+            },
+            cells: {
+              style: {
+                fontSize: "14px",
+                padding: "8px",
+                borderRight: "1px solid #afdfda",
+                borderBottom: "1px solid #afdfda",
+                "&:last-child": {
+                  borderRight: "none",
+                },
+              },
+            },
+            rows: {
+              style: {
+                "&:last-child": {
+                  "& td": {
+                    borderBottom: "none",
+                  },
+                },
+              },
+            },
+            pagination: {
+              style: {
+                borderTop: "1px solid #afdfda",
+                borderBottomLeftRadius: "8px",
+                borderBottomRightRadius: "8px",
+              },
+            },
+          }}
+          pagination
+          highlightOnHover
+          striped
         />
       </article>
 
@@ -148,7 +276,7 @@ export const ListaProductos = () => {
                   onChange={handleChange}
                   fullWidth
                   id="outlined-basic"
-                  label="Pretentación"
+                  label="Presentación"
                   variant="outlined"
                 />
                 <TextField
@@ -241,7 +369,7 @@ export const ListaProductos = () => {
                   onChange={handleChange}
                   fullWidth
                   id="outlined-basic"
-                  label="Pretentación"
+                  label="Presentación"
                   variant="outlined"
                 />
                 <TextField
