@@ -16,7 +16,7 @@ export const Menu = ({ open, setOpen }) => {
       ></div>
 
       <nav
-        className={`bg-white w-65 top-0 left-0 h-full fixed md:static z-50 md:w-90 transition-transform duration-300 transform ${
+        className={`bg-white w-65 top-0 left-0 h-screen fixed md:static z-50 md:w-90 transition-transform duration-300 transform ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -113,7 +113,10 @@ export const Menu = ({ open, setOpen }) => {
             </svg>
             Lista productos
           </NavLink>
-          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
+          <NavLink
+            to="/ficha-productos"
+            className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -130,7 +133,7 @@ export const Menu = ({ open, setOpen }) => {
               <path d="M16.243 7.757a6 6 0 0 1 0 8.486" />
             </svg>
             Ficha productos
-          </li>
+          </NavLink>
           <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { LoaderProvider } from "./context/loaderContext";
 import { Loader } from "./components/ui/Loader";
 import { ChatBot } from "./components/ui/ChatBot";
+import { FichaProductos } from "./views/FichaProductos";
 
 function App() {
   const isAuthenticated = () => {
@@ -57,6 +58,7 @@ function App() {
           <Route element={<PrivateRouteWithLayout />}>
             <Route path="/home-admin" element={<HomeAdmin />} />
             <Route path="/lista-productos" element={<ListaProductos />} />
+            <Route path="/ficha-productos" element={<FichaProductos />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
