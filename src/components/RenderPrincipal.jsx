@@ -26,7 +26,7 @@ export const RenderPrincipal = () => {
   return (
     <>
       <div className="flex h-screen">
-        {open ? <Menu setOpen={setOpen} /> : null}
+        <Menu open={open} setOpen={setOpen} />
         <div className="flex flex-col w-full px-4">
           <header className="bg-[#51b4c3] h-10 py-8 px-5 rounded-lg w-full mt-4 flex items-center justify-between md:justify-end">
             <button

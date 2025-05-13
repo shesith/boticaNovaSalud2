@@ -3,16 +3,23 @@ import { getImageUrl } from "../utils/getImageUrl";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { AlertSquareConfirm } from "./ui/AlertSquareConfirm";
 
-export const Menu = ({ setOpen }) => {
+export const Menu = ({ open, setOpen }) => {
   const navigate = useNavigate();
 
   return (
     <>
       <div
         onClick={() => setOpen(false)}
-        className="fixed md:static inset-0 bg-black opacity-50 z-40 md:hidden "
+        className={`fixed inset-0 bg-black z-40 md:hidden transition-opacity duration-300 ${
+          open ? "opacity-50" : "opacity-0 pointer-events-none"
+        }`}
       ></div>
-      <nav className="bg-white w-65 top-0 left-0 h-full fixed md:static z-50 md:w-90 ">
+
+      <nav
+        className={`bg-white w-65 top-0 left-0 h-full fixed md:static z-50 md:w-90 transition-transform duration-300 transform ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
         <button
           onClick={() => setOpen(false)}
           className="absolute right-2 top-2 cursor-pointer md:hidden "

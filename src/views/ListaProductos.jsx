@@ -118,7 +118,7 @@ export const ListaProductos = () => {
         <Modal
           open={openModal.editar}
           onClose={() => setOpenModal({ ...openModal, editar: false })}
-          className="flex items-center justify-center"
+          className="flex items-center justify-center mx-6"
         >
           <div className="bg-white rounded-lg shadow-lg p-6 w-130 relative">
             <IconButton
@@ -210,7 +210,7 @@ export const ListaProductos = () => {
         <Modal
           open={openModal.agregar}
           onClose={() => setOpenModal({ ...openModal, agregar: false })}
-          className="flex items-center justify-center"
+          className="flex items-center justify-center mx-6"
         >
           <div className="bg-white rounded-lg shadow-lg p-6 w-130 relative">
             <IconButton
