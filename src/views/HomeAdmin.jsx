@@ -3,7 +3,7 @@ import AddIcon from "@mui/icons-material/Add";
 
 export const HomeAdmin = () => {
   return (
-    <article className="my-8">
+    <article className="mb-8">
       <div className="grid md:grid-flow-col md:grid-cols-2 gap-4 mb-4">
         <div className="flex flex-col gap-4">
           <div className="bg-white p-6 h-full rounded-2xl">
