@@ -226,11 +226,11 @@ export const ListaProductos = () => {
     hideLoader();
   };
 
-  const data = [
-    { nombre: "Juan Pérez", email: "juan@example.com", edad: 30 },
-    { nombre: "María López", email: "maria@example.com", edad: 25 },
-    { nombre: "Carlos Gómez", email: "carlos@example.com", edad: 35 },
-  ];
+  // const data = [
+  //   { nombre: "Juan Pérez", email: "juan@example.com", edad: 30 },
+  //   { nombre: "María López", email: "maria@example.com", edad: 25 },
+  //   { nombre: "Carlos Gómez", email: "carlos@example.com", edad: 35 },
+  // ];
 
   const columns = [
     {
@@ -399,8 +399,8 @@ export const ListaProductos = () => {
 
         <DataTable
           columns={columns}
-          // data={dataProductos}
-          data={data}
+          data={dataProductos}
+          // data={data}
           highlightOnHover
           striped
           noDataComponent={
