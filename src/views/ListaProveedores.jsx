@@ -99,6 +99,7 @@ export const ListaProveedores = () => {
               // onClick={() => setOpenModal({ ...openModal, agregar: true })}
               variant="contained"
               sx={{
+                borderRadius: ".8rem",
                 display: "flex",
                 gap: ".5rem",
                 backgroundColor: "#a8a8a8",
@@ -132,6 +133,7 @@ export const ListaProveedores = () => {
               startIcon={<AddIcon />}
               variant="contained"
               sx={{
+                borderRadius: ".8rem",
                 backgroundColor: "#51B4C3",
                 "&:hover": {
                   backgroundColor: "#3a9ca8",

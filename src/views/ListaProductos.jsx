@@ -225,6 +225,7 @@ export const ListaProductos = () => {
             // onClick={() => setOpenModal({ ...openModal, agregar: true })}
             variant="contained"
             sx={{
+              borderRadius: ".8rem",
               display: "flex",
               gap: ".5rem",
               backgroundColor: "#a8a8a8",
@@ -260,6 +261,7 @@ export const ListaProductos = () => {
             onClick={() => setOpenModal({ ...openModal, agregar: true })}
             variant="contained"
             sx={{
+              borderRadius: ".8rem",
               backgroundColor: "#51B4C3",
               "&:hover": {
                 backgroundColor: "#3a9ca8",
@@ -449,6 +451,11 @@ export const ListaProductos = () => {
 
               <div className="w-full flex flex-col gap-4">
                 <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
                   name="nombre"
                   onChange={handleChange}
                   fullWidth
@@ -457,6 +464,11 @@ export const ListaProductos = () => {
                   variant="outlined"
                 />
                 <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
                   name="presentacion"
                   onChange={handleChange}
                   fullWidth
@@ -465,6 +477,11 @@ export const ListaProductos = () => {
                   variant="outlined"
                 />
                 <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
                   name="cantidad"
                   onChange={handleChange}
                   fullWidth
@@ -473,6 +490,11 @@ export const ListaProductos = () => {
                   variant="outlined"
                 />
                 <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
                   name="stock"
                   onChange={handleChange}
                   fullWidth
@@ -503,6 +525,11 @@ export const ListaProductos = () => {
                 </FormControl>
 
                 <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
                   name="precio"
                   onChange={handleChange}
                   fullWidth
@@ -511,6 +538,11 @@ export const ListaProductos = () => {
                   variant="outlined"
                 />
                 <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
                   name="descripcion"
                   onChange={handleChange}
                   label="Descripción"
@@ -522,7 +554,11 @@ export const ListaProductos = () => {
 
                 <Button
                   onClick={agregarProducto}
-                  sx={{ backgroundColor: "#51b4c3", color: "#fff" }}
+                  sx={{
+                    backgroundColor: "#51b4c3",
+                    color: "#fff",
+                    borderRadius: "1.2rem",
+                  }}
                   variant="text"
                 >
                   Agregar producto

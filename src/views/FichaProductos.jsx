@@ -42,7 +42,7 @@ export const FichaProductos = () => {
             </Select>
           </FormControl>
 
-          <button className="bg-[#51b4c3] p-4 rounded-xl text-white">
+          <button className="bg-[#51b4c3] p-4 rounded-xl text-white cursor-pointer">
             Seleccionar
           </button>
         </div>
