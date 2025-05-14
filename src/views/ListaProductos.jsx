@@ -25,6 +25,7 @@ import { Alert } from "../components/ui/Alert";
 export const ListaProductos = () => {
   const { showLoader, hideLoader } = useLoader();
   const [dataCategorias, setDataCategorias] = useState([]);
+  const [dataProductos, setDataProductos] = useState([]);
   const [dataProducto, setDataProducto] = useState({
     codigo: "",
     nombre: "",
@@ -102,16 +103,48 @@ export const ListaProductos = () => {
     }
   };
 
-  const data = [
-    { nombre: "Juan Pérez", email: "juan@example.com", edad: 30 },
-    { nombre: "María López", email: "maria@example.com", edad: 25 },
-    { nombre: "Carlos Gómez", email: "carlos@example.com", edad: 35 },
-  ];
+  const getDataProductos = async () => {
+    showLoader();
+    const responseProductos = await services({
+      method: "GET",
+      service: "http://localhost:5000/productos",
+    });
+
+    if (responseProductos.status === 200) {
+      Alert("success", "Productos obtenidos");
+      setDataProductos(responseProductos.data);
+    } else {
+      Alert("error", "Error al obtener los productos");
+    }
+    hideLoader();
+  };
+
+  const editarProducto = async (id) => {
+    setOpenModal({ ...openModal, editar: true });
+
+    const responseGetproduct = await services({
+      method: "GET",
+      service: `http://localhost:5000/producto/${id}`,
+    });
+
+    if (responseGetproduct.status === 200) {
+      setDataProducto({
+        id_producto: responseGetproduct.data.id_producto,
+        nombre: responseGetproduct.data.nombre,
+        presentacion: responseGetproduct.data.presentacion,
+        cantidad: responseGetproduct.data.cantidad,
+        stock: responseGetproduct.data.stock,
+        categoria: responseGetproduct.data.idCategoria,
+        precio: responseGetproduct.data.precio,
+        descripcion: responseGetproduct.data.descripcion,
+      });
+    }
+  };
 
   const columns = [
     {
       name: "CÓDIGO",
-      selector: (row) => row.edad,
+      selector: (row) => row.id_producto,
       center: true,
       headerStyle: {
         backgroundColor: "#afdfda",
@@ -129,7 +162,7 @@ export const ListaProductos = () => {
     },
     {
       name: "PRESENTACIÓN",
-      selector: (row) => row.nombre,
+      selector: (row) => row.descripcion,
       center: true,
       headerStyle: {
         fontWeight: "bold",
@@ -138,7 +171,7 @@ export const ListaProductos = () => {
     },
     {
       name: "CANTIDAD",
-      selector: (row) => row.edad,
+      selector: (row) => row.cantidad,
       center: true,
       sortable: true,
       headerStyle: {
@@ -148,7 +181,7 @@ export const ListaProductos = () => {
     },
     {
       name: "STOCK",
-      selector: (row) => row.edad,
+      selector: (row) => row.stock,
       center: true,
       sortable: true,
       headerStyle: {
@@ -158,7 +191,7 @@ export const ListaProductos = () => {
     },
     {
       name: "CATEGORÍA",
-      selector: (row) => row.nombre,
+      selector: (row) => row.idCategoria,
       center: true,
       sortable: true,
       headerStyle: {
@@ -168,7 +201,7 @@ export const ListaProductos = () => {
     },
     {
       name: "PRECIO U.",
-      selector: (row) => `$${row.edad}`,
+      selector: (row) => `$${row.precio}`,
       center: true,
       headerStyle: {
         paddingRight: "0",
@@ -182,7 +215,9 @@ export const ListaProductos = () => {
       cell: (row) => (
         <div className="flex gap-2">
           <button
-            onClick={() => setOpenModal({ ...openModal, editar: true })}
+            onClick={() => {
+              editarProducto(row.id_producto);
+            }}
             className="bg-green-500 hover:bg-green-600 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
             <EditIcon fontSize="small" />
@@ -205,6 +240,7 @@ export const ListaProductos = () => {
   useEffect(() => {
     function initialData() {
       getDataCategorias();
+      getDataProductos();
     }
     initialData();
   }, []);
@@ -272,7 +308,7 @@ export const ListaProductos = () => {
 
         <DataTable
           columns={columns}
-          data={data}
+          data={dataProductos}
           highlightOnHover
           striped
           customStyles={{
@@ -358,6 +394,7 @@ export const ListaProductos = () => {
                 <TextField
                   name="nombre"
                   onChange={handleChange}
+                  value={dataProducto?.nombre}
                   fullWidth
                   id="outlined-basic"
                   label="Nombre"
@@ -366,6 +403,7 @@ export const ListaProductos = () => {
                 <TextField
                   name="presentacion"
                   onChange={handleChange}
+                  value={dataProducto?.presentacion}
                   fullWidth
                   id="outlined-basic"
                   label="Presentación"
@@ -373,6 +411,7 @@ export const ListaProductos = () => {
                 />
                 <TextField
                   name="cantidad"
+                  value={dataProducto?.cantidad}
                   onChange={handleChange}
                   fullWidth
                   id="outlined-basic"
@@ -382,6 +421,7 @@ export const ListaProductos = () => {
                 <TextField
                   name="stock"
                   onChange={handleChange}
+                  value={dataProducto?.stock}
                   fullWidth
                   id="outlined-basic"
                   label="Stock"
@@ -389,6 +429,7 @@ export const ListaProductos = () => {
                 />
                 <TextField
                   name="categoria"
+                  value={dataProducto?.categoria}
                   onChange={handleChange}
                   fullWidth
                   id="outlined-basic"
@@ -397,6 +438,7 @@ export const ListaProductos = () => {
                 />
                 <TextField
                   name="precio"
+                  value={dataProducto?.precio}
                   onChange={handleChange}
                   fullWidth
                   id="outlined-basic"
@@ -405,6 +447,7 @@ export const ListaProductos = () => {
                 />
                 <TextField
                   name="descripcion"
+                  value={dataProducto?.descripcion}
                   onChange={handleChange}
                   label="Descripción"
                   multiline
