@@ -1,11 +1,21 @@
-import { Button } from "@mui/material";
+import { Button, IconButton, Modal, TextField } from "@mui/material";
 import DataTable from "react-data-table-component";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { useState } from "react";
 
 export const ListaClientes = () => {
+  const [openModal, setOpenModal] = useState(false);
+  const [dataCliente, setDataCliente] = useState({
+    codigo: "",
+    nombre: "",
+    nodocumento: "",
+    celular: "",
+    email: "",
+  });
+
   const data = [
     { nombre: "Juan Pérez", email: "juan@example.com", edad: 30 },
     { nombre: "María López", email: "maria@example.com", edad: 25 },
@@ -87,6 +97,13 @@ export const ListaClientes = () => {
     },
   ];
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setDataCliente({ ...dataCliente, [name]: value });
+  };
+
+  const agregarCliente = async () => {};
+
   return (
     <>
       <article className="container mx-auto py-6 bg-white p-4 rounded-2xl mb-4">
@@ -134,7 +151,7 @@ export const ListaClientes = () => {
             </Button>
             <Button
               startIcon={<AddIcon />}
-              // onClick={() => setOpenModal({ ...openModal, agregar: true })}
+              onClick={() => setOpenModal(true)}
               variant="contained"
               sx={{
                 borderRadius: ".8rem",
@@ -212,6 +229,128 @@ export const ListaClientes = () => {
           }}
         />
       </article>
+
+      {openModal ? (
+        <Modal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          className="flex items-center justify-center mx-6"
+        >
+          <div className="bg-white rounded-lg shadow-lg p-6 w-130 relative">
+            <IconButton
+              sx={{
+                position: "absolute",
+                top: "1rem",
+                right: "1rem",
+              }}
+              onClick={() => setOpenModal(false)}
+              aria-label="clear"
+            >
+              <ClearIcon />
+            </IconButton>
+            <div className="flex flex-col items-center">
+              <h2 className="text-2xl font-semibold mb-4">Agregar cliente</h2>
+
+              <div className="w-full flex flex-col gap-4">
+                <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
+                  name="codigo"
+                  onChange={handleChange}
+                  fullWidth
+                  id="outlined-basic"
+                  label="Código"
+                  variant="outlined"
+                />
+                <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
+                  name="nombre"
+                  onChange={handleChange}
+                  fullWidth
+                  id="outlined-basic"
+                  label="Nombre"
+                  variant="outlined"
+                />
+                <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
+                  name="nodocumento"
+                  onChange={handleChange}
+                  fullWidth
+                  id="outlined-basic"
+                  label="No. documento"
+                  variant="outlined"
+                />
+
+                <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
+                  name="celular"
+                  onChange={handleChange}
+                  fullWidth
+                  id="outlined-basic"
+                  label="Celular"
+                  variant="outlined"
+                />
+                <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
+                  name="email"
+                  onChange={handleChange}
+                  label="Email"
+                  multiline
+                  // rows={3}
+                  placeholder="Escribe algo..."
+                  fullWidth
+                />
+
+                <Button
+                  onClick={agregarCliente}
+                  sx={{
+                    backgroundColor: "#51b4c3",
+                    color: "#fff",
+                    borderRadius: "1.2rem",
+                  }}
+                  variant="text"
+                >
+                  Agregar cliente
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

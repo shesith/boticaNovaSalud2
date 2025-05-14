@@ -43,8 +43,6 @@ export const ListaProductos = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
-
     setDataProducto({ ...dataProducto, [name]: value });
   };
 
@@ -456,6 +454,9 @@ export const ListaProductos = () => {
                       borderRadius: "1.2rem",
                     },
                   }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
                   name="nombre"
                   onChange={handleChange}
                   fullWidth
@@ -468,6 +469,9 @@ export const ListaProductos = () => {
                     sx: {
                       borderRadius: "1.2rem",
                     },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
                   }}
                   name="presentacion"
                   onChange={handleChange}
@@ -482,6 +486,9 @@ export const ListaProductos = () => {
                       borderRadius: "1.2rem",
                     },
                   }}
+                  inputProps={{
+                    maxLength: 10,
+                  }}
                   name="cantidad"
                   onChange={handleChange}
                   fullWidth
@@ -494,6 +501,9 @@ export const ListaProductos = () => {
                     sx: {
                       borderRadius: "1.2rem",
                     },
+                  }}
+                  inputProps={{
+                    maxLength: 10,
                   }}
                   name="stock"
                   onChange={handleChange}
@@ -516,11 +526,18 @@ export const ListaProductos = () => {
                     label="Productos"
                     onChange={handleChange}
                   >
-                    {dataCategorias.map((item, index) => (
-                      <MenuItem key={index} value={item.id_categoria}>
-                        {item?.nombre}
+                    {Array.isArray(dataCategorias) &&
+                    dataCategorias.length > 0 ? (
+                      dataCategorias.map((item, index) => (
+                        <MenuItem key={index} value={item.id_categoria}>
+                          {item.nombre || "Sin nombre"}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem disabled>
+                        No hay categorías disponibles
                       </MenuItem>
-                    ))}
+                    )}
                   </Select>
                 </FormControl>
 
@@ -529,6 +546,9 @@ export const ListaProductos = () => {
                     sx: {
                       borderRadius: "1.2rem",
                     },
+                  }}
+                  inputProps={{
+                    maxLength: 10,
                   }}
                   name="precio"
                   onChange={handleChange}
@@ -543,11 +563,13 @@ export const ListaProductos = () => {
                       borderRadius: "1.2rem",
                     },
                   }}
+                  inputProps={{
+                    maxLength: 265,
+                  }}
                   name="descripcion"
                   onChange={handleChange}
                   label="Descripción"
                   multiline
-                  // rows={3}
                   placeholder="Escribe algo..."
                   fullWidth
                 />
