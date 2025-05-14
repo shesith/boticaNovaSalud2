@@ -155,8 +155,8 @@ export const ListaProductos = () => {
 
   return (
     <>
-      <article className="container mx-auto  py-6">
-        <div className="flex flex-col md:flex-row gap-4 justify-between md:items-center mb-6 ">
+      <article className="container mx-auto py-6">
+        <div className="flex flex-col md:flex-row gap-4 justify-between md:items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-800">
             LISTA DE PRODUCTOS
           </h2>

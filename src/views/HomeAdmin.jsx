@@ -4,8 +4,8 @@ import AddIcon from "@mui/icons-material/Add";
 export const HomeAdmin = () => {
   return (
     <article className="mb-8">
-      <div className="grid md:grid-flow-col md:grid-cols-2 gap-4 mb-4">
-        <div className="flex flex-col gap-4">
+      <div className="grid md:grid-cols-5 gap-4 mb-4">
+        <div className="flex flex-col gap-4 col-span-1">
           <div className="bg-white p-6 h-full rounded-2xl">
             <p>Órdenes</p>
             <span className="font-bold">2,76k</span>
@@ -15,8 +15,9 @@ export const HomeAdmin = () => {
             <span className="font-bold">6,24k</span>
           </div>
         </div>
-        <div className="bg-white p-6 w-full rounded-2xl">
-          <p>Estadisticas</p>
+
+        <div className="bg-white p-6 rounded-2xl col-span-4">
+          <p>Estadísticas</p>
         </div>
       </div>
 

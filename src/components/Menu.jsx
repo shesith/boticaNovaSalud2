@@ -2,6 +2,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { getImageUrl } from "../utils/getImageUrl";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { AlertSquareConfirm } from "./ui/AlertSquareConfirm";
+import SouthIcon from "@mui/icons-material/South";
 
 export const Menu = ({ open, setOpen }) => {
   const navigate = useNavigate();
@@ -93,7 +94,9 @@ export const Menu = ({ open, setOpen }) => {
               <path d="M12 12v4" />
               <path d="M10 7v-3a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v3" />
             </svg>
-            Productos
+            <div className="flex items-center justify-between w-full">
+              Productos <SouthIcon />
+            </div>
           </li>
           <NavLink
             to="/lista-productos"
@@ -158,9 +161,17 @@ export const Menu = ({ open, setOpen }) => {
               <path d="M9 11v-5a3 3 0 0 1 6 0v5" />
               <path d="M15 19l2 2l4 -4" />
             </svg>
-            Ventas
+            <div className="flex items-center justify-between w-full">
+              Ventas
+              <SouthIcon />
+            </div>
           </li>
-          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
+          <NavLink
+            to="/lista-clientes"
+            className={`bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50 ${
+              location.pathname === "/lista-clientes" ? "bg-[#AFDFDA]" : ""
+            }`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -177,8 +188,13 @@ export const Menu = ({ open, setOpen }) => {
               <path d="M16.243 7.757a6 6 0 0 1 0 8.486" />
             </svg>
             Clientes
-          </li>
-          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
+          </NavLink>
+          <NavLink
+            to="/facturacion"
+            className={`bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50 ${
+              location.pathname === "/facturacion" ? "bg-[#AFDFDA]" : ""
+            }`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -195,7 +211,7 @@ export const Menu = ({ open, setOpen }) => {
               <path d="M16.243 7.757a6 6 0 0 1 0 8.486" />
             </svg>
             Facturación
-          </li>
+          </NavLink>
           <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -212,9 +228,17 @@ export const Menu = ({ open, setOpen }) => {
               <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
               <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
             </svg>
-            Recepción
+            <div className="flex items-center justify-between w-full">
+              Recepción
+              <SouthIcon />
+            </div>
           </li>
-          <li className="bg-[#51b4c3] p-2.5 flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
+          <NavLink
+            to="/lista-proveedores"
+            className={`bg-[#51b4c3] p-2.5 flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50  ${
+              location.pathname === "/lista-proveedores" ? "bg-[#AFDFDA]" : ""
+            }`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -231,7 +255,7 @@ export const Menu = ({ open, setOpen }) => {
               <path d="M16.243 7.757a6 6 0 0 1 0 8.486" />
             </svg>
             Proveedores
-          </li>
+          </NavLink>
 
           <button
             className="w-full font-bold text-white bg-red-400 p-2.5 flex justify-center items-center gap-1 rounded-xl mt-8 cursor-pointer hover:bg-red-500 transition-all duration-300 hover:scale-105  hover:shadow-lg hover:shadow-[bg-red-500]/50"

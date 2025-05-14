@@ -9,6 +9,10 @@ import { LoaderProvider } from "./context/loaderContext";
 import { Loader } from "./components/ui/Loader";
 import { ChatBot } from "./components/ui/ChatBot";
 import { FichaProductos } from "./views/FichaProductos";
+import { ListaClientes } from "./views/ListaClientes";
+import { Facturacion } from "./views/Facturacion";
+import { AgregarFacturacion } from "./views/AgregarFacturacion";
+import { ListaProveedores } from "./views/ListaProveedores";
 
 function App() {
   const isAuthenticated = () => {
@@ -59,6 +63,13 @@ function App() {
             <Route path="/home-admin" element={<HomeAdmin />} />
             <Route path="/lista-productos" element={<ListaProductos />} />
             <Route path="/ficha-productos" element={<FichaProductos />} />
+            <Route path="/lista-clientes" element={<ListaClientes />} />
+            <Route path="/facturacion" element={<Facturacion />} />
+            <Route
+              path="/facturacion/agregar-facturacion"
+              element={<AgregarFacturacion />}
+            />
+            <Route path="/lista-proveedores" element={<ListaProveedores />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
