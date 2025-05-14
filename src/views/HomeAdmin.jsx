@@ -5,28 +5,75 @@ export const HomeAdmin = () => {
   return (
     <article className="mb-8">
       <div className="grid md:grid-cols-5 gap-4 mb-4">
-        <div className="flex flex-col gap-4 col-span-1">
-          <div className="bg-white p-6 h-full rounded-2xl">
+        <div className="flex flex-col gap-4 col-span-4 md:col-span-1">
+          <div className="bg-white p-6 h-full rounded-2xl shadow-md text-[#7D7878] ">
             <p>Órdenes</p>
             <span className="font-bold">2,76k</span>
           </div>
-          <div className="bg-white p-6 h-full rounded-2xl">
+          <div className="bg-white p-6 h-full rounded-2xl shadow-md text-[#7D7878] ">
             <p>Beneficios</p>
             <span className="font-bold">6,24k</span>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl col-span-4">
-          <p>Estadísticas</p>
+        <div className="bg-white p-6 rounded-2xl col-span-4 shadow-md md:flex lg:items-center lg:justify-evenly relative">
+          <p className="text-[#7D7878] text-lg text-center md:text-left mb-6 md:mb-0 absolute top-4 left-4">
+            Estadísticas
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 xl:gap-20 mt-8">
+            <div className="flex items-center gap-4">
+              <img
+                className="w-20"
+                src={getImageUrl("icon-ventas", "png")}
+                alt="Icono ventas"
+              />
+              <p className="text-[#7D7878]">
+                <span className="text-lg">230K</span> <br /> Ventas
+              </p>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <img
+                className="w-20"
+                src={getImageUrl("icon-clientes", "png")}
+                alt="Icono clientes"
+              />
+              <p className="text-[#7D7878]">
+                <span className="text-lg">8.549k</span> <br /> Clientes
+              </p>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <img
+                className="w-20"
+                src={getImageUrl("icon-productos", "png")}
+                alt="Icono productos"
+              />
+              <p className="text-[#7D7878]">
+                <span className="text-lg">1.423k</span> <br /> Productos
+              </p>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <img
+                className="w-20"
+                src={getImageUrl("icon-ingresos", "png")}
+                alt="Icono ingresos"
+              />
+              <p className="text-[#7D7878]">
+                <span className="text-lg">$9745</span> <br /> Ingresos
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4">
-        <div className="w-full bg-white p-6 rounded-2xl">
+        <div className="w-full bg-white p-6 rounded-2xl shadow-md">
           <p>Ventas</p>
         </div>
 
-        <div className="relative md:w-fit h-64 rounded-lg overflow-hidden cursor-pointer group">
+        <div className="relative md:w-fit h-64 rounded-lg overflow-hidden cursor-pointer group shadow-md">
           <img
             src={getImageUrl("add-image", "jpg")}
             alt="Imagen de fondo"

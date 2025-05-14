@@ -18,7 +18,7 @@ export const Menu = ({ open, setOpen }) => {
       ></div>
 
       <nav
-        className={`bg-white w-65 top-0 left-0 h-screen fixed md:static z-50 md:w-90 transition-transform duration-300 transform ${
+        className={`bg-white md:shadow-xl w-65 top-0 left-0 h-screen fixed md:static z-50 md:w-90 transition-transform duration-300 transform ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >

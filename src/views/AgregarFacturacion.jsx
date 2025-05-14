@@ -18,14 +18,17 @@ import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AgregarFacturacion = () => {
+  const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   const data = [
     { nombre: "Juan Pérez", email: "juan@example.com", edad: 30 },
     { nombre: "María López", email: "maria@example.com", edad: 25 },
     { nombre: "Carlos Gómez", email: "carlos@example.com", edad: 35 },
   ];
+
   const columnsSelectProduct = [
     {
       name: "CÓDIGO",
@@ -158,7 +161,7 @@ export const AgregarFacturacion = () => {
 
   return (
     <>
-      <article className="container mx-auto py-6 bg-white p-4 rounded-2xl mb-4">
+      <article className="container mx-auto py-6 bg-white p-4 rounded-2xl mb-4 shadow-md">
         <div className="ms-4">
           <h2 className="text-2xl font-bold text-[#7D7878] w-full">
             AÑADIR FACTURACIÓN
@@ -175,6 +178,9 @@ export const AgregarFacturacion = () => {
             <TextField
               sx={{ width: "100%" }}
               id="outlined-basic"
+              inputProps={{
+                maxLength: 50,
+              }}
               InputProps={{
                 sx: {
                   borderRadius: "1.2rem",
@@ -195,6 +201,9 @@ export const AgregarFacturacion = () => {
                   borderRadius: "1.2rem",
                 },
               }}
+              inputProps={{
+                maxLength: 50,
+              }}
               id="outlined-basic"
               variant="outlined"
             />
@@ -213,31 +222,28 @@ export const AgregarFacturacion = () => {
           </LocalizationProvider>
 
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
+            <InputLabel id="tipo-comprobante-label">
               Tipo comprobante
             </InputLabel>
             <Select
               sx={{ borderRadius: "1.2rem" }}
-              labelId="demo-simple-select-label"
-              id="demo-simple-select-label"
-              // value={age}
-              label="Productos"
-              // onChange={handleChange}
+              labelId="tipo-comprobante-label"
+              id="tipo-comprobante"
+              label="Tipo comprobante"
             >
               <MenuItem value={10}>Ten</MenuItem>
               <MenuItem value={20}>Twenty</MenuItem>
               <MenuItem value={30}>Thirty</MenuItem>
             </Select>
           </FormControl>
+
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Medio de pago</InputLabel>
+            <InputLabel id="medio-pago-label">Medio de pago</InputLabel>
             <Select
               sx={{ borderRadius: "1.2rem" }}
-              labelId="demo-simple-select-label"
-              id="demo-simple-select-label"
-              // value={age}
-              label="Productos"
-              // onChange={handleChange}
+              labelId="medio-pago-label"
+              id="medio-pago"
+              label="Medio de pago"
             >
               <MenuItem value={10}>Ten</MenuItem>
               <MenuItem value={20}>Twenty</MenuItem>
@@ -341,7 +347,7 @@ export const AgregarFacturacion = () => {
             Guardar
           </Button>
           <Button
-            // onClick={() => navigate("agregar-facturacion")}
+            onClick={() => navigate("/facturacion")}
             variant="contained"
             sx={{
               borderRadius: ".8rem",

@@ -23,7 +23,7 @@ export const FichaProductos = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="bg-white p-8 rounded-xl">
+      <div className="bg-white p-8 rounded-xl shadow-md">
         <h3 className="text-lg mb-2 font-bold text-[#7D7878]">Productos</h3>
         <div className="flex flex-col md:flex-row gap-3 items-center">
           <FormControl fullWidth>
@@ -48,7 +48,7 @@ export const FichaProductos = () => {
         </div>
       </div>
 
-      <div className="bg-white p-8 rounded-xl my-4">
+      <div className="bg-white p-8 rounded-xl my-4 shadow-md">
         <h3 className="text-lg mb-2 font-bold text-[#7D7878]">Producto</h3>
         <div className="flex flex-col md:flex-row gap-3">
           <div className="w-full">

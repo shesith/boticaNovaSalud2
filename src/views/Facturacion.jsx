@@ -5,6 +5,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useNavigate } from "react-router-dom";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 
 export const Facturacion = () => {
   const navigate = useNavigate();
@@ -69,15 +71,15 @@ export const Facturacion = () => {
         <div className="flex gap-2">
           <button
             // onClick={() => setOpenModal({ ...openModal, editar: true })}
-            className="bg-green-500 hover:bg-green-600 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
+            className="border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
-            <EditIcon fontSize="small" />
+            <PictureAsPdfIcon fontSize="medium" />
           </button>
           <button
             // onClick={() => eliminarProducto(row.id)}
-            className="bg-red-600 hover:bg-red-700 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
+            className="border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
-            <DeleteForeverIcon fontSize="small" />
+            <TextSnippetIcon fontSize="medium" />
           </button>
         </div>
       ),
@@ -90,7 +92,7 @@ export const Facturacion = () => {
 
   return (
     <>
-      <article className="container mx-auto py-6 bg-white p-4 rounded-2xl mb-4">
+      <article className="container mx-auto py-6 bg-white p-4 rounded-2xl mb-4 shadow-md">
         <div className="ms-4">
           <h2 className="text-2xl font-bold text-[#7D7878] w-full">
             FACTURACIÓN
