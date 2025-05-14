@@ -24,7 +24,7 @@ export const FichaProductos = () => {
   return (
     <div className="flex flex-col">
       <div className="bg-white p-8 rounded-xl">
-        <h3 className="text-lg mb-2 font-bold">Productos</h3>
+        <h3 className="text-lg mb-2 font-bold text-[#7D7878]">Productos</h3>
         <div className="flex flex-col md:flex-row gap-3 items-center">
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Productos</InputLabel>
@@ -49,7 +49,7 @@ export const FichaProductos = () => {
       </div>
 
       <div className="bg-white p-8 rounded-xl my-4">
-        <h3 className="text-lg mb-2 font-bold">Producto</h3>
+        <h3 className="text-lg mb-2 font-bold text-[#7D7878]">Producto</h3>
         <div className="flex flex-col md:flex-row gap-3">
           <div className="w-full">
             <InputLabel sx={{ marginBottom: ".5rem" }} id="tipoVehiculo-label">
@@ -116,7 +116,7 @@ export const FichaProductos = () => {
           </div>
         </div>
 
-        <h3 className="text-lg mb-2 font-bold">Inventario</h3>
+        <h3 className="text-lg mb-2 font-bold text-[#7D7878]">Inventario</h3>
         <div className="flex flex-col md:flex-row gap-3">
           <div className="w-full">
             <InputLabel sx={{ marginBottom: ".5rem" }} id="tipoVehiculo-label">
