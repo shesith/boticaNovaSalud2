@@ -32,8 +32,8 @@ export const ListaProductos = () => {
     nombre: "",
     presentacion: "",
     cantidad: "",
-    stock: "",
-    categoria: "",
+    stock: null,
+    categoria: null,
     precio: "",
     descripcion: "",
   });
@@ -45,6 +45,7 @@ export const ListaProductos = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setDataProducto({ ...dataProducto, [name]: value });
   };
 
@@ -61,7 +62,7 @@ export const ListaProductos = () => {
         showLoader();
         const response = await services({
           method: "DELETE",
-          service: `http://localhist:500/producto/${id}`,
+          service: `http://localhost:5000/producto/${id}`,
         });
 
         if (response.status === 200) {
@@ -76,25 +77,27 @@ export const ListaProductos = () => {
   };
 
   const agregarProducto = async () => {
-    const camposRequeridos = [
+    const camposTexto = [
       "nombre",
-      "categoria",
       "presentacion",
-      "cantidad",
       "descripcion",
       "precio",
-      "stock",
+      "cantidad",
     ];
+    const camposNumericos = ["stock", "categoria"];
 
-    const hayCamposVacios = camposRequeridos.some(
-      (campo) => !dataProducto[campo]?.trim()
+    const camposVaciosTexto = camposTexto.some(
+      (campo) => String(dataProducto[campo] ?? "").trim() === ""
     );
 
-    if (hayCamposVacios) {
+    const camposVaciosNumericos = camposNumericos.some(
+      (campo) => dataProducto[campo] === null || dataProducto[campo] === ""
+    );
+
+    if (camposVaciosTexto || camposVaciosNumericos) {
       Alert("warning", "Todos los campos son obligatorios.");
       return;
     }
-
     showLoader();
 
     const bodyDataProducto = {
@@ -151,9 +154,7 @@ export const ListaProductos = () => {
     hideLoader();
   };
 
-  const getInfoEditarProducto = async (id) => {
-    setOpenModal({ ...openModal, editar: true });
-
+  const editarProductoGetData = async (id) => {
     showLoader();
 
     const responseGetproduct = await services({
@@ -162,6 +163,7 @@ export const ListaProductos = () => {
     });
 
     if (responseGetproduct.status === 200) {
+      setOpenModal({ ...openModal, editar: true });
       setDataProducto({
         id_producto: responseGetproduct.data.id_producto,
         nombre: responseGetproduct.data.nombre,
@@ -179,21 +181,24 @@ export const ListaProductos = () => {
   };
 
   const editarProducto = async () => {
-    const camposRequeridos = [
+    const camposTexto = [
       "nombre",
-      "categoria",
       "presentacion",
-      "cantidad",
       "descripcion",
       "precio",
-      "stock",
+      "cantidad",
     ];
+    const camposNumericos = ["stock", "categoria"];
 
-    const hayCamposVacios = camposRequeridos.some(
-      (campo) => !dataProducto[campo]?.trim()
+    const camposVaciosTexto = camposTexto.some(
+      (campo) => String(dataProducto[campo] ?? "").trim() === ""
     );
 
-    if (hayCamposVacios) {
+    const camposVaciosNumericos = camposNumericos.some(
+      (campo) => dataProducto[campo] === null || dataProducto[campo] === ""
+    );
+
+    if (camposVaciosTexto || camposVaciosNumericos) {
       Alert("warning", "Todos los campos son obligatorios.");
       return;
     }
@@ -202,12 +207,12 @@ export const ListaProductos = () => {
 
     const bodyEdit = {
       nombre: dataProducto.nombre,
+      idCategoria: dataProducto.categoria,
       presentacion: dataProducto.presentacion,
       cantidad: dataProducto.cantidad,
-      stock: dataProducto.stock,
-      categoria: dataProducto.idCategoria,
-      precio: dataProducto.precio,
       descripcion: dataProducto.descripcion,
+      precio: dataProducto.precio,
+      stock: dataProducto.stock,
     };
 
     const response = await services({
@@ -307,14 +312,14 @@ export const ListaProductos = () => {
         <div className="flex gap-2">
           <button
             onClick={() => {
-              getInfoEditarProducto(row.id_producto);
+              editarProductoGetData(row.id_producto);
             }}
             className="bg-green-500 hover:bg-green-600 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
             <EditIcon fontSize="small" />
           </button>
           <button
-            onClick={() => eliminarProducto(row.id)}
+            onClick={() => eliminarProducto(row.id_producto)}
             className="bg-red-600 hover:bg-red-700 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
             <DeleteForeverIcon fontSize="small" />
@@ -537,6 +542,7 @@ export const ListaProductos = () => {
                     },
                   }}
                   name="stock"
+                  type="number"
                   onChange={handleChange}
                   value={dataProducto?.stock}
                   fullWidth
@@ -697,6 +703,7 @@ export const ListaProductos = () => {
                   inputProps={{
                     maxLength: 10,
                   }}
+                  type="number"
                   name="stock"
                   onChange={handleChange}
                   fullWidth

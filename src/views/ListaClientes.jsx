@@ -87,7 +87,7 @@ export const ListaClientes = () => {
       cell: (row) => (
         <div className="flex gap-2">
           <button
-            onClick={() => getEditarCliente(row.id)}
+            onClick={() => editarClienteGetData(row.id)}
             className="bg-green-500 hover:bg-green-600 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
             <EditIcon fontSize="small" />
@@ -113,19 +113,39 @@ export const ListaClientes = () => {
   };
 
   const getDataClientes = async () => {
+    showLoader();
     const responseClientes = await services({
       method: "GET",
       service: "http://localhost:5000/",
     });
 
     if (responseClientes.status === 200) {
+      Alert("success", "Clientes obtenidos correctamente");
       setDataClientesGet(responseClientes.data);
     } else {
       Alert("error", "Error al obtener los clientes");
     }
+    hideLoader();
   };
 
   const agregarCliente = async () => {
+    const camposRequeridos = [
+      "codigo",
+      "nombre",
+      "nodocumento",
+      "celular",
+      "email",
+    ];
+
+    const hayCamposVacios = camposRequeridos.some(
+      (campo) => !dataCliente[campo]?.trim()
+    );
+
+    if (hayCamposVacios) {
+      Alert("warning", "Todos los campos son obligatorios.");
+      return;
+    }
+
     showLoader();
 
     const bodyDataProducto = {
@@ -153,8 +173,27 @@ export const ListaClientes = () => {
     hideLoader();
   };
 
-  const getEditarCliente = async (id) => {
-    setOpenModal({ ...openModal, editar: true });
+  const editarClienteGetData = async (id) => {
+    showLoader();
+
+    const response = await services({
+      method: "GET",
+      service: `http://localhost:5000/clientes/${id}`,
+    });
+
+    if (response.status === 200) {
+      setOpenModal({ ...openModal, editar: true });
+      setDataCliente({
+        codigo: response.data,
+        nombre: response.data,
+        nodocumento: response.data,
+        celular: response.data,
+        email: response.data,
+      });
+    } else {
+      Alert("error", "Error al obtener datos del cliente");
+    }
+    hideLoader();
   };
 
   const editarCliente = async () => {};
@@ -429,7 +468,7 @@ export const ListaClientes = () => {
                 />
 
                 <Button
-                  onClick={editarCliente}
+                  onClick={agregarCliente}
                   sx={{
                     backgroundColor: "#51b4c3",
                     color: "#fff",

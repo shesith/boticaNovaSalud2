@@ -94,7 +94,7 @@ export const ListaProveedores = () => {
             <EditIcon fontSize="small" />
           </button>
           <button
-            onClick={() => eliminarProveedor(row.id)}
+            onClick={() => eliminarProveedor(row.id_proveedor)}
             className="bg-red-600 hover:bg-red-700 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
             <DeleteForeverIcon fontSize="small" />
@@ -131,7 +131,6 @@ export const ListaProveedores = () => {
 
   const editarProveedorGetData = async (id) => {
     showLoader();
-    setOpenModal({ ...openModal, editar: true });
 
     const response = await services({
       method: "GET",
@@ -139,6 +138,7 @@ export const ListaProveedores = () => {
     });
 
     if (response.status === 200) {
+      setOpenModal({ ...openModal, editar: true });
       setDataProveedor({
         idProveedor: response.data.id_proveedor,
         razonSocial: response.data.razon_social,
@@ -148,7 +148,7 @@ export const ListaProveedores = () => {
         direccion: response.data.direccion,
       });
     } else {
-      Alert("error", "Error al obtener data del proveedor");
+      Alert("error", "Error al obtener datos del proveedor");
     }
     hideLoader();
   };
@@ -261,7 +261,7 @@ export const ListaProveedores = () => {
           Alert("success", "Proveedor eliminado exitosamente");
           getDataProveedores();
         } else {
-          Alert("error", "Error al elimninar el proveedor");
+          Alert("error", "Error al eliminar el proveedor");
         }
         hideLoader();
       }
