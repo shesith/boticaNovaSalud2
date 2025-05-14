@@ -7,8 +7,8 @@ import { Login } from "./components/Login";
 import { useEffect } from "react";
 import { LoaderProvider } from "./context/loaderContext";
 import { Loader } from "./components/ui/Loader";
-import { ChatBot } from "./components/ui/ChatBot";
 import { FichaProductos } from "./views/FichaProductos";
+import Chatbot from "./components/Chatbot";
 
 function App() {
   const isAuthenticated = () => {
@@ -52,7 +52,7 @@ function App() {
       <LoaderProvider>
         {/* {isAuthenticated() && !isLoginPage && <RenderPrincipal />} */}
         <Loader />
-        <ChatBot />
+        <Chatbot />
         <Routes>
           <Route path="/" element={<Login />} />
           <Route element={<PrivateRouteWithLayout />}>

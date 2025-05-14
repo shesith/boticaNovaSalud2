@@ -1,21 +1,30 @@
 import {
   Box,
   Button,
+  FormControl,
   IconButton,
+  InputLabel,
+  MenuItem,
   Modal,
+  Select,
   TextareaAutosize,
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import { AlertSquareConfirm } from "../components/ui/AlertSquareConfirm";
+import { useLoader } from "../context/loaderContext";
+import { services } from "../service/api";
+import { Alert } from "../components/ui/Alert";
 
 export const ListaProductos = () => {
+  const { showLoader, hideLoader } = useLoader();
+  const [dataCategorias, setDataCategorias] = useState([]);
   const [dataProducto, setDataProducto] = useState({
     codigo: "",
     nombre: "",
@@ -34,6 +43,8 @@ export const ListaProductos = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value);
+
     setDataProducto({ ...dataProducto, [name]: value });
   };
 
@@ -51,6 +62,46 @@ export const ListaProductos = () => {
         console.log("Producto eliminado");
       }
     });
+  };
+
+  const agregarProducto = async () => {
+    showLoader();
+
+    const bodyDataProducto = {
+      nombre: dataProducto.nombre,
+      idCategoria: dataProducto.categoria,
+      presentacion: dataProducto.presentacion,
+      cantidad: dataProducto.cantidad,
+      descripcion: dataProducto.descripcion,
+      precio: dataProducto.precio,
+      stock: dataProducto.stock,
+    };
+
+    const response = await services({
+      method: "POST",
+      service: "http://localhost:5000/productos",
+      body: bodyDataProducto,
+    });
+
+    if (response.status === 200) {
+      Alert("success", "Producto agregaado");
+    } else {
+      Alert("error", "Error al agregar el producto");
+    }
+    hideLoader();
+  };
+
+  const getDataCategorias = async () => {
+    const responseCategorias = await services({
+      method: "GET",
+      service: "http://localhost:5000/categorias",
+    });
+
+    if (responseCategorias.status === 200) {
+      setDataCategorias(responseCategorias.data);
+    } else {
+      Alert("error", "Error al obtener las categorías");
+    }
   };
 
   const data = [
@@ -153,6 +204,13 @@ export const ListaProductos = () => {
     },
   ];
 
+  useEffect(() => {
+    function initialData() {
+      getDataCategorias();
+    }
+    initialData();
+  }, []);
+
   return (
     <>
       <article className="container mx-auto  py-6">
@@ -180,7 +238,6 @@ export const ListaProductos = () => {
         <DataTable
           columns={columns}
           data={data}
-          pagination
           highlightOnHover
           striped
           customStyles={{
@@ -388,14 +445,28 @@ export const ListaProductos = () => {
                   label="Stock"
                   variant="outlined"
                 />
-                <TextField
-                  name="categoria"
-                  onChange={handleChange}
-                  fullWidth
-                  id="outlined-basic"
-                  label="Categoría"
-                  variant="outlined"
-                />
+
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Categorías
+                  </InputLabel>
+                  <Select
+                    sx={{ borderRadius: "1.2rem" }}
+                    labelId="demo-simple-select-label"
+                    name="categoria"
+                    id="demo-simple-select-label"
+                    value={dataProducto.categoria}
+                    label="Productos"
+                    onChange={handleChange}
+                  >
+                    {dataCategorias.map((item, index) => (
+                      <MenuItem key={index} value={item.id_categoria}>
+                        {item?.nombre}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
                 <TextField
                   name="precio"
                   onChange={handleChange}
@@ -415,6 +486,7 @@ export const ListaProductos = () => {
                 />
 
                 <Button
+                  onClick={agregarProducto}
                   sx={{ backgroundColor: "#51b4c3", color: "#fff" }}
                   variant="text"
                 >
