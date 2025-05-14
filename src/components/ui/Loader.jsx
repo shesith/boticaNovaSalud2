@@ -7,11 +7,30 @@ export const Loader = () => {
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white/80">
-      <div className="flex gap-2">
-        {[...Array(5)].map((_, i) => (
-          <div key={i} style={{ "--i": i }} className="slider"></div>
-        ))}
-      </div>
+      <svg
+        class="loader"
+        viewBox="0 0 384 384"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          class="active"
+          pathLength="360"
+          fill="transparent"
+          stroke-width="32"
+          cx="192"
+          cy="192"
+          r="176"
+        ></circle>
+        <circle
+          class="track"
+          pathLength="360"
+          fill="transparent"
+          stroke-width="32"
+          cx="192"
+          cy="192"
+          r="176"
+        ></circle>
+      </svg>
     </div>
   );
 };

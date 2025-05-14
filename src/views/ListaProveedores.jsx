@@ -3,34 +3,41 @@ import AddIcon from "@mui/icons-material/Add";
 import DataTable from "react-data-table-component";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useLoader } from "../context/loaderContext";
+import { services } from "../service/api";
+import { Alert } from "../components/ui/Alert";
+import { AlertSquareConfirm } from "../components/ui/AlertSquareConfirm";
 
 export const ListaProveedores = () => {
   const { showLoader, hideLoader } = useLoader();
+  const [dataProveedores, setDataProveedores] = useState([]);
 
   const [openModal, setOpenModal] = useState({
     editar: false,
     agregar: false,
   });
+
   const [dataProveedor, setDataProveedor] = useState({
+    idProveedor: "",
     razonSocial: "",
     ruc: "",
     email: "",
     direccion: "",
     telefono: "",
   });
-  const data = [
-    { nombre: "Juan Pérez", email: "juan@example.com", edad: 30 },
-    { nombre: "María López", email: "maria@example.com", edad: 25 },
-    { nombre: "Carlos Gómez", email: "carlos@example.com", edad: 35 },
-  ];
+
+  // const data = [
+  //   { nombre: "Juan Pérez", email: "juan@example.com", edad: 30 },
+  //   { nombre: "María López", email: "maria@example.com", edad: 25 },
+  //   { nombre: "Carlos Gómez", email: "carlos@example.com", edad: 35 },
+  // ];
 
   const columns = [
     {
       name: "RAZÓN SOCIAL",
-      selector: (row) => row.edad,
+      selector: (row) => row.razon_social,
       center: true,
       headerStyle: {
         backgroundColor: "#afdfda",
@@ -39,7 +46,7 @@ export const ListaProveedores = () => {
     },
     {
       name: "RUC",
-      selector: (row) => row.nombre,
+      selector: (row) => row.ruc,
       center: true,
       headerStyle: {
         fontWeight: "bold",
@@ -48,7 +55,7 @@ export const ListaProveedores = () => {
     },
     {
       name: "EMAIL",
-      selector: (row) => row.edad,
+      selector: (row) => row.email,
       center: true,
       headerStyle: {
         fontWeight: "bold",
@@ -57,7 +64,7 @@ export const ListaProveedores = () => {
     },
     {
       name: "DIRECCIÓN",
-      selector: (row) => row.edad,
+      selector: (row) => row.direccion,
       center: true,
       sortable: true,
       headerStyle: {
@@ -67,7 +74,7 @@ export const ListaProveedores = () => {
     },
     {
       name: "TELÉFONO",
-      selector: (row) => row.edad,
+      selector: (row) => row.telefono,
       center: true,
       sortable: true,
       headerStyle: {
@@ -81,13 +88,13 @@ export const ListaProveedores = () => {
       cell: (row) => (
         <div className="flex gap-2">
           <button
-            onClick={() => setOpenModal({ ...openModal, editar: true })}
+            onClick={() => editarProveedorGetData(row.id_proveedor)}
             className="bg-green-500 hover:bg-green-600 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
             <EditIcon fontSize="small" />
           </button>
           <button
-            // onClick={() => eliminarProducto(row.id)}
+            onClick={() => eliminarProveedor(row.id)}
             className="bg-red-600 hover:bg-red-700 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
             <DeleteForeverIcon fontSize="small" />
@@ -101,12 +108,172 @@ export const ListaProveedores = () => {
     },
   ];
 
+  const getDataProveedores = async () => {
+    showLoader();
+    const response = await services({
+      method: "GET",
+      service: "http://localhost:5000/proveedores",
+    });
+
+    if (response.status === 200) {
+      Alert("success", "Proveedores obtenidos correctamente");
+      setDataProveedores(response.data);
+    } else {
+      Alert("error", "Error al obtener los proveedores");
+    }
+    hideLoader();
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDataProveedor({ ...dataProveedor, [name]: value });
   };
 
-  const agregarProveedor = async () => {};
+  const editarProveedorGetData = async (id) => {
+    showLoader();
+    setOpenModal({ ...openModal, editar: true });
+
+    const response = await services({
+      method: "GET",
+      service: `http://localhost:5000/proveedores/${id}`,
+    });
+
+    if (response.status === 200) {
+      setDataProveedor({
+        idProveedor: response.data.id_proveedor,
+        razonSocial: response.data.razon_social,
+        ruc: response.data.ruc,
+        email: response.data.email,
+        telefono: response.data.telefono,
+        direccion: response.data.direccion,
+      });
+    } else {
+      Alert("error", "Error al obtener data del proveedor");
+    }
+    hideLoader();
+  };
+
+  const editarProveedor = async () => {
+    const camposRequeridos = [
+      "razonSocial",
+      "ruc",
+      "email",
+      "telefono",
+      "direccion",
+    ];
+
+    const hayCamposVacios = camposRequeridos.some(
+      (campo) => !dataProveedor[campo]?.trim()
+    );
+
+    if (hayCamposVacios) {
+      Alert("warning", "Todos los campos son obligatorios.");
+      return;
+    }
+
+    showLoader();
+
+    const dataBodyProveedor = {
+      razon_social: dataProveedor.razonSocial,
+      ruc: dataProveedor.ruc,
+      email: dataProveedor.email,
+      telefono: dataProveedor.telefono,
+      direccion: dataProveedor.direccion,
+    };
+
+    const response = await services({
+      method: "PUT",
+      service: `http://localhost:5000/proveedores/${dataProveedor.idProveedor}`,
+      body: dataBodyProveedor,
+    });
+
+    if (response.status === 200) {
+      Alert("success", "Proveedor actualizado correctamente");
+      setOpenModal({ ...openModal, editar: false });
+      getDataProveedores();
+    } else {
+      Alert("error", "Error al actualizar el proveedor");
+    }
+    hideLoader();
+  };
+
+  const agregarProveedor = async () => {
+    const camposRequeridos = [
+      "razonSocial",
+      "ruc",
+      "email",
+      "telefono",
+      "direccion",
+    ];
+
+    const hayCamposVacios = camposRequeridos.some(
+      (campo) => !dataProveedor[campo]?.trim()
+    );
+
+    if (hayCamposVacios) {
+      Alert("warning", "Todos los campos son obligatorios.");
+      return;
+    }
+
+    showLoader();
+
+    const dataBodyProveedor = {
+      razon_social: dataProveedor.razonSocial,
+      ruc: dataProveedor.ruc,
+      email: dataProveedor.email,
+      telefono: dataProveedor.telefono,
+      direccion: dataProveedor.direccion,
+    };
+
+    const response = await services({
+      method: "POST",
+      service: "http://localhost:5000/proveedores",
+      body: dataBodyProveedor,
+    });
+
+    if (response.status === 200) {
+      Alert("success", "Registro exitoso");
+      setOpenModal({ ...openModal, agregar: false });
+      getDataProveedores();
+    } else {
+      Alert("error", "Error al actualizar el proveedor");
+    }
+    hideLoader();
+  };
+
+  const eliminarProveedor = async (id) => {
+    AlertSquareConfirm({
+      icon: "warning",
+      title: "Atención",
+      text: "¿Estás seguro de que desea eliminar el proveedor?",
+      showDeny: true,
+      confirmButtonText: "Salir",
+      denyButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        showLoader();
+        const response = await services({
+          method: "DELETE",
+          service: `http://localhost:5000/proveedores/${id}`,
+        });
+
+        if (response.status === 200) {
+          Alert("success", "Proveedor eliminado exitosamente");
+          getDataProveedores();
+        } else {
+          Alert("error", "Error al elimninar el proveedor");
+        }
+        hideLoader();
+      }
+    });
+  };
+
+  useEffect(() => {
+    function initialData() {
+      getDataProveedores();
+    }
+    initialData();
+  }, []);
 
   return (
     <>
@@ -173,7 +340,8 @@ export const ListaProveedores = () => {
 
         <DataTable
           columns={columns}
-          data={data}
+          data={dataProveedores}
+          // data={data}
           highlightOnHover
           noDataComponent={
             <div className="text-center py-6 text-gray-500 text-sm">
@@ -395,6 +563,7 @@ export const ListaProveedores = () => {
                   inputProps={{
                     maxLength: 50,
                   }}
+                  value={dataProveedor?.razonSocial}
                   name="razonSocial"
                   onChange={handleChange}
                   fullWidth
@@ -412,6 +581,7 @@ export const ListaProveedores = () => {
                   inputProps={{
                     maxLength: 50,
                   }}
+                  value={dataProveedor?.ruc}
                   name="ruc"
                   onChange={handleChange}
                   fullWidth
@@ -429,6 +599,7 @@ export const ListaProveedores = () => {
                   inputProps={{
                     maxLength: 50,
                   }}
+                  value={dataProveedor?.email}
                   name="email"
                   onChange={handleChange}
                   label="Email"
@@ -447,6 +618,7 @@ export const ListaProveedores = () => {
                   inputProps={{
                     maxLength: 50,
                   }}
+                  value={dataProveedor?.direccion}
                   name="direccion"
                   onChange={handleChange}
                   fullWidth
@@ -464,6 +636,7 @@ export const ListaProveedores = () => {
                   inputProps={{
                     maxLength: 50,
                   }}
+                  value={dataProveedor?.telefono}
                   name="telefono"
                   onChange={handleChange}
                   fullWidth
@@ -473,7 +646,7 @@ export const ListaProveedores = () => {
                 />
 
                 <Button
-                  onClick={agregarProveedor}
+                  onClick={editarProveedor}
                   sx={{
                     backgroundColor: "#51b4c3",
                     color: "#fff",

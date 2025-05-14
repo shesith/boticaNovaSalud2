@@ -76,6 +76,25 @@ export const ListaProductos = () => {
   };
 
   const agregarProducto = async () => {
+    const camposRequeridos = [
+      "nombre",
+      "categoria",
+      "presentacion",
+      "cantidad",
+      "descripcion",
+      "precio",
+      "stock",
+    ];
+
+    const hayCamposVacios = camposRequeridos.some(
+      (campo) => !dataProducto[campo]?.trim()
+    );
+
+    if (hayCamposVacios) {
+      Alert("warning", "Todos los campos son obligatorios.");
+      return;
+    }
+
     showLoader();
 
     const bodyDataProducto = {
@@ -135,6 +154,8 @@ export const ListaProductos = () => {
   const getInfoEditarProducto = async (id) => {
     setOpenModal({ ...openModal, editar: true });
 
+    showLoader();
+
     const responseGetproduct = await services({
       method: "GET",
       service: `http://localhost:5000/producto/${id}`,
@@ -151,10 +172,32 @@ export const ListaProductos = () => {
         precio: responseGetproduct.data.precio,
         descripcion: responseGetproduct.data.descripcion,
       });
+    } else {
+      Alert("error", "Error al obtener el producto");
     }
+    hideLoader();
   };
 
   const editarProducto = async () => {
+    const camposRequeridos = [
+      "nombre",
+      "categoria",
+      "presentacion",
+      "cantidad",
+      "descripcion",
+      "precio",
+      "stock",
+    ];
+
+    const hayCamposVacios = camposRequeridos.some(
+      (campo) => !dataProducto[campo]?.trim()
+    );
+
+    if (hayCamposVacios) {
+      Alert("warning", "Todos los campos son obligatorios.");
+      return;
+    }
+
     showLoader();
 
     const bodyEdit = {

@@ -3,7 +3,7 @@ import axios from "axios";
 
 function Chatbot() {
   const [messages, setMessages] = useState([]);
-  const [chatVisible, setChatVisible] = useState(false); // Estado para mostrar el chat
+  const [chatVisible, setChatVisible] = useState(false);
 
   const sendMessage = async (message) => {
     setMessages([...messages, { sender: "user", text: message }]);
