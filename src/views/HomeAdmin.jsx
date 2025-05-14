@@ -1,5 +1,6 @@
 import { getImageUrl } from "../utils/getImageUrl";
 import AddIcon from "@mui/icons-material/Add";
+import { LineChart } from "@mui/x-charts/LineChart";
 
 export const HomeAdmin = () => {
   return (
@@ -71,6 +72,16 @@ export const HomeAdmin = () => {
       <div className="flex flex-col md:flex-row gap-4">
         <div className="w-full bg-white p-6 rounded-2xl shadow-md">
           <p>Ventas</p>
+
+          <LineChart
+            xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+            series={[
+              {
+                data: [2, 5.5, 2, 8.5, 1.5, 5],
+              },
+            ]}
+            height={300}
+          />
         </div>
 
         <div className="relative md:w-fit h-64 rounded-lg overflow-hidden cursor-pointer group shadow-md">
