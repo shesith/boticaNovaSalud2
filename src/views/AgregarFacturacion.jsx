@@ -173,7 +173,7 @@ export const AgregarFacturacion = () => {
         <div className="flex flex-col md:flex-row gap-3">
           <div className="w-full">
             <InputLabel sx={{ marginBottom: ".5rem" }} id="tipoVehiculo-label">
-              Código
+              Cliente
             </InputLabel>
             <TextField
               sx={{ width: "100%" }}

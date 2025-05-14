@@ -8,10 +8,16 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
+import { useLoader } from "../context/loaderContext";
+import { Alert } from "../components/ui/Alert";
+import { services } from "../service/api";
 
 export const FichaProductos = () => {
-  const [dataForm, setDataForm] = useState({
-    productos: "",
+  const { showLoader, hideLoader } = useLoader();
+  const [dataProductos, setDataProductos] = useState([]);
+  const [dataProducto, setDataProducto] = useState({
+    productoId: "",
+    idProductoSelected: "",
     codigo: "",
     nombre: "",
     descripcion: "",
@@ -50,9 +56,55 @@ export const FichaProductos = () => {
     setImage(null);
   };
 
-  const handleChange = (e) => {};
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-  const getDataProductos = async () => {};
+    if (name === "idProductoSelected") {
+      setDataProducto({ ...dataProducto, [name]: value });
+      obtenerDataProducto(value);
+    } else {
+      setDataProducto({ ...dataProducto, [name]: value });
+    }
+  };
+  const getDataProductos = async () => {
+    showLoader();
+    const responseProductos = await services({
+      method: "GET",
+      service: "http://localhost:5000/productos",
+    });
+
+    if (responseProductos.status === 200) {
+      Alert("success", "Productos obtenidos");
+      setDataProductos(responseProductos.data);
+    } else {
+      Alert("error", "Error al obtener los productos");
+    }
+    hideLoader();
+  };
+
+  const obtenerDataProducto = async (id) => {
+    showLoader();
+
+    const responseGetproduct = await services({
+      method: "GET",
+      service: `http://localhost:5000/producto/${id}`,
+    });
+
+    if (responseGetproduct.status === 200) {
+      setDataProducto({
+        productoId: responseGetproduct.data.id_producto,
+        codigo: responseGetproduct.data.id_producto,
+        nombre: responseGetproduct.data.nombre,
+        descripcion: responseGetproduct.data.descripcion,
+        precio: responseGetproduct.data.precio,
+        categoria: responseGetproduct.data.idCategoria,
+        stock: responseGetproduct.data.stock,
+      });
+    } else {
+      Alert("error", "Error al obtener el producto");
+    }
+    hideLoader();
+  };
 
   useEffect(() => {
     function initialData() {
@@ -72,19 +124,26 @@ export const FichaProductos = () => {
               sx={{ borderRadius: "1.2rem" }}
               labelId="demo-simple-select-label"
               id="demo-simple-select-label"
-              // value={age}
+              name="idProductoSelected"
+              value={dataProducto.idProductoSelected}
               label="Productos"
-              // onChange={handleChange}
+              onChange={handleChange}
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              {Array.isArray(dataProductos) && dataProductos.length > 0 ? (
+                dataProductos.map((item, index) => (
+                  <MenuItem key={index} value={item?.id_producto}>
+                    {item?.nombre || "Sin nombre"}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>No hay productos disponibles</MenuItem>
+              )}
             </Select>
           </FormControl>
 
-          <button className="bg-[#51b4c3] p-4 rounded-xl text-white cursor-pointer">
+          {/* <button className="bg-[#51b4c3] p-4 rounded-xl text-white cursor-pointer">
             Seleccionar
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -97,7 +156,7 @@ export const FichaProductos = () => {
             </InputLabel>
             <TextField
               disabled
-              value={dataForm?.codigo}
+              value={dataProducto?.codigo}
               sx={{ width: "100%" }}
               id="outlined-basic"
               InputProps={{
@@ -114,7 +173,7 @@ export const FichaProductos = () => {
             </InputLabel>
             <TextField
               disabled
-              value={dataForm?.nombre}
+              value={dataProducto?.nombre}
               sx={{ width: "100%" }}
               InputProps={{
                 sx: {
@@ -133,7 +192,7 @@ export const FichaProductos = () => {
               Descripción
             </InputLabel>
             <TextField
-              value={dataForm?.descripcion}
+              value={dataProducto?.descripcion}
               sx={{ width: "100%" }}
               InputProps={{
                 sx: {
@@ -150,7 +209,7 @@ export const FichaProductos = () => {
             </InputLabel>
             <TextField
               disabled
-              value={dataForm?.precio}
+              value={dataProducto?.precio}
               sx={{ width: "100%" }}
               InputProps={{
                 sx: {
@@ -170,7 +229,7 @@ export const FichaProductos = () => {
               Categoría
             </InputLabel>
             <TextField
-              value={dataForm?.categoria}
+              value={dataProducto?.categoria}
               disabled
               sx={{ width: "100%" }}
               InputProps={{
@@ -187,7 +246,7 @@ export const FichaProductos = () => {
               Stock
             </InputLabel>
             <TextField
-              value={dataForm?.stock}
+              value={dataProducto?.stock}
               disabled
               sx={{ width: "100%" }}
               InputProps={{

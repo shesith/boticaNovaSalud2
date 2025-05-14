@@ -45,7 +45,6 @@ export const ListaProductos = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setDataProducto({ ...dataProducto, [name]: value });
   };
 
@@ -62,7 +61,7 @@ export const ListaProductos = () => {
         showLoader();
         const response = await services({
           method: "DELETE",
-          service: `http://localhost:5000/producto/${id}`,
+          service: `http://localhost:5000/productos/${id}`,
         });
 
         if (response.status === 200) {
@@ -118,6 +117,7 @@ export const ListaProductos = () => {
 
     if (response.status === 200) {
       getDataProductos();
+      setOpenModal({ ...openModal, agregar: false });
       Alert("success", "Producto agregado");
     } else {
       Alert("error", "Error al agregar el producto");
@@ -217,7 +217,7 @@ export const ListaProductos = () => {
 
     const response = await services({
       method: "PUT",
-      service: `http://localhost:5000/producto/${dataProducto.id_producto}`,
+      service: `http://localhost:5000/productos/${dataProducto.id_producto}`,
       body: bodyEdit,
     });
 
@@ -232,7 +232,7 @@ export const ListaProductos = () => {
   };
 
   // const data = [
-  //   { nombre: "Juan Pérez", email: "juan@example.com", edad: 30 },
+  //   { nombre: "Juan Pérez", email: "juan@example.com", edad: 30.50 },
   //   { nombre: "María López", email: "maria@example.com", edad: 25 },
   //   { nombre: "Carlos Gómez", email: "carlos@example.com", edad: 35 },
   // ];
@@ -297,7 +297,7 @@ export const ListaProductos = () => {
     },
     {
       name: "PRECIO U.",
-      selector: (row) => `$${row.precio}`,
+      selector: (row) => `S/${row.precio}`,
       center: true,
       headerStyle: {
         paddingRight: "0",
@@ -405,7 +405,6 @@ export const ListaProductos = () => {
         <DataTable
           columns={columns}
           data={dataProductos}
-          // data={data}
           highlightOnHover
           striped
           noDataComponent={
