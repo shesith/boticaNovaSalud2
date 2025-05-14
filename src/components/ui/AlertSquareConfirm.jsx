@@ -19,5 +19,6 @@ export const AlertSquareConfirm = ({
     confirmButtonColor: "#51B4C3",
     allowOutsideClick: false,
     reverseButtons: false,
+    scrollbarPadding: false,
   });
 };

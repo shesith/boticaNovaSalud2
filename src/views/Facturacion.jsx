@@ -155,9 +155,13 @@ export const Facturacion = () => {
         <DataTable
           columns={columns}
           data={data}
-          pagination
           highlightOnHover
           striped
+          noDataComponent={
+            <div className="text-center py-6 text-gray-500 text-sm">
+              No hay facturaciones.
+            </div>
+          }
           customStyles={{
             table: {
               style: {

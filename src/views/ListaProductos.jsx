@@ -27,6 +27,7 @@ export const ListaProductos = () => {
   const [dataCategorias, setDataCategorias] = useState([]);
   const [dataProductos, setDataProductos] = useState([]);
   const [dataProducto, setDataProducto] = useState({
+    id_producto: "",
     codigo: "",
     nombre: "",
     presentacion: "",
@@ -55,10 +56,21 @@ export const ListaProductos = () => {
       showDeny: true,
       confirmButtonText: "Salir",
       denyButtonText: "Cancelar",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        // logica para eliminar el producto
-        console.log("Producto eliminado");
+        showLoader();
+        const response = await services({
+          method: "DELETE",
+          service: `http://localhist:500/producto/${id}`,
+        });
+
+        if (response.status === 200) {
+          Alert("success", "Producto eliminado con éxito");
+          getDataProductos();
+        } else {
+          Alert("error", "Error al eliminar el producto");
+        }
+        hideLoader();
       }
     });
   };
@@ -83,7 +95,8 @@ export const ListaProductos = () => {
     });
 
     if (response.status === 200) {
-      Alert("success", "Producto agregaado");
+      getDataProductos();
+      Alert("success", "Producto agregado");
     } else {
       Alert("error", "Error al agregar el producto");
     }
@@ -119,7 +132,7 @@ export const ListaProductos = () => {
     hideLoader();
   };
 
-  const editarProducto = async (id) => {
+  const getInfoEditarProducto = async (id) => {
     setOpenModal({ ...openModal, editar: true });
 
     const responseGetproduct = await services({
@@ -140,6 +153,41 @@ export const ListaProductos = () => {
       });
     }
   };
+
+  const editarProducto = async () => {
+    showLoader();
+
+    const bodyEdit = {
+      nombre: dataProducto.nombre,
+      presentacion: dataProducto.presentacion,
+      cantidad: dataProducto.cantidad,
+      stock: dataProducto.stock,
+      categoria: dataProducto.idCategoria,
+      precio: dataProducto.precio,
+      descripcion: dataProducto.descripcion,
+    };
+
+    const response = await services({
+      method: "PUT",
+      service: `http://localhost:5000/producto/${dataProducto.id_producto}`,
+      body: bodyEdit,
+    });
+
+    if (response.status === 200) {
+      Alert("success", "Producto editado");
+      getDataProductos();
+      setOpenModal({ ...openModal, editar: false });
+    } else {
+      Alert("error", "Error al editar el producto");
+    }
+    hideLoader();
+  };
+
+  const data = [
+    { nombre: "Juan Pérez", email: "juan@example.com", edad: 30 },
+    { nombre: "María López", email: "maria@example.com", edad: 25 },
+    { nombre: "Carlos Gómez", email: "carlos@example.com", edad: 35 },
+  ];
 
   const columns = [
     {
@@ -216,7 +264,7 @@ export const ListaProductos = () => {
         <div className="flex gap-2">
           <button
             onClick={() => {
-              editarProducto(row.id_producto);
+              getInfoEditarProducto(row.id_producto);
             }}
             className="bg-green-500 hover:bg-green-600 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
@@ -308,9 +356,15 @@ export const ListaProductos = () => {
 
         <DataTable
           columns={columns}
-          data={dataProductos}
+          // data={dataProductos}
+          data={data}
           highlightOnHover
           striped
+          noDataComponent={
+            <div className="text-center py-6 text-gray-500 text-sm">
+              No hay productos disponibles.
+            </div>
+          }
           customStyles={{
             table: {
               style: {
@@ -392,6 +446,11 @@ export const ListaProductos = () => {
               <h2 className="text-2xl font-semibold mb-4">Editar Producto</h2>
               <div className="w-full flex flex-col gap-4">
                 <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
                   name="nombre"
                   onChange={handleChange}
                   value={dataProducto?.nombre}
@@ -401,6 +460,11 @@ export const ListaProductos = () => {
                   variant="outlined"
                 />
                 <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
                   name="presentacion"
                   onChange={handleChange}
                   value={dataProducto?.presentacion}
@@ -410,6 +474,11 @@ export const ListaProductos = () => {
                   variant="outlined"
                 />
                 <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
                   name="cantidad"
                   value={dataProducto?.cantidad}
                   onChange={handleChange}
@@ -419,6 +488,11 @@ export const ListaProductos = () => {
                   variant="outlined"
                 />
                 <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
                   name="stock"
                   onChange={handleChange}
                   value={dataProducto?.stock}
@@ -427,17 +501,43 @@ export const ListaProductos = () => {
                   label="Stock"
                   variant="outlined"
                 />
-                <TextField
-                  name="categoria"
-                  value={dataProducto?.categoria}
-                  onChange={handleChange}
-                  fullWidth
-                  id="outlined-basic"
-                  label="Categoría"
-                  variant="outlined"
-                />
+                <FormControl fullWidth>
+                  <InputLabel id="categoria-label">Categorías</InputLabel>
+                  <Select
+                    sx={{ borderRadius: "1.2rem" }}
+                    labelId="categoria-label"
+                    name="categoria"
+                    id="categoria"
+                    value={dataProducto?.categoria || ""}
+                    label="Categorías"
+                    onChange={handleChange}
+                  >
+                    {Array.isArray(dataCategorias) &&
+                    dataCategorias.length > 0 ? (
+                      dataCategorias.map((item, index) => (
+                        <MenuItem key={index} value={item.id_categoria}>
+                          {item.id_categoria === 1
+                            ? "Medicamento"
+                            : item.id_categoria === 2
+                            ? "Analgesico"
+                            : "Paracetamol"}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem disabled>
+                        No hay categorías disponibles
+                      </MenuItem>
+                    )}
+                  </Select>
+                </FormControl>
+
                 <TextField
                   name="precio"
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
                   value={dataProducto?.precio}
                   onChange={handleChange}
                   fullWidth
@@ -446,6 +546,11 @@ export const ListaProductos = () => {
                   variant="outlined"
                 />
                 <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
                   name="descripcion"
                   value={dataProducto?.descripcion}
                   onChange={handleChange}
@@ -457,6 +562,7 @@ export const ListaProductos = () => {
                 />
 
                 <Button
+                  onClick={editarProducto}
                   sx={{ backgroundColor: "#51b4c3", color: "#fff" }}
                   variant="text"
                 >

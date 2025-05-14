@@ -76,7 +76,7 @@ export const Menu = ({ open, setOpen }) => {
             </svg>
             Home
           </NavLink>
-          <li className="bg-[#51b4c3] p-2.5 flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
+          <li className="bg-[#51b4c3] p-2.5 flex items-center gap-1 rounded-xl mb-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -144,7 +144,7 @@ export const Menu = ({ open, setOpen }) => {
             </svg>
             Ficha productos
           </NavLink>
-          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
+          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -212,7 +212,7 @@ export const Menu = ({ open, setOpen }) => {
             </svg>
             Facturación
           </NavLink>
-          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50">
+          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"

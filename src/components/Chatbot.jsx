@@ -20,7 +20,7 @@ function Chatbot() {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-[9999]">
+    <div className="fixed bottom-5 right-5 z-[999]">
       <button
         className="bg-[#51b4c3] text-white px-7 py-3 rounded-full shadow-lg hover:bg-[#7bd5e3] transition-transform duration-300 hover:scale-105"
         onClick={() => setChatVisible(!chatVisible)}

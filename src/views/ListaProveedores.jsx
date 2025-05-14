@@ -5,9 +5,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useState } from "react";
 import ClearIcon from "@mui/icons-material/Clear";
+import { useLoader } from "../context/loaderContext";
 
 export const ListaProveedores = () => {
-  const [openModal, setOpenModal] = useState(false);
+  const { showLoader, hideLoader } = useLoader();
+
+  const [openModal, setOpenModal] = useState({
+    editar: false,
+    agregar: false,
+  });
   const [dataProveedor, setDataProveedor] = useState({
     razonSocial: "",
     ruc: "",
@@ -75,7 +81,7 @@ export const ListaProveedores = () => {
       cell: (row) => (
         <div className="flex gap-2">
           <button
-            // onClick={() => setOpenModal({ ...openModal, editar: true })}
+            onClick={() => setOpenModal({ ...openModal, editar: true })}
             className="bg-green-500 hover:bg-green-600 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
             <EditIcon fontSize="small" />
@@ -148,7 +154,7 @@ export const ListaProveedores = () => {
                 Exportar
               </Button>
               <Button
-                onClick={() => setOpenModal(true)}
+                onClick={() => setOpenModal({ ...openModal, agregar: true })}
                 startIcon={<AddIcon />}
                 variant="contained"
                 sx={{
@@ -168,8 +174,12 @@ export const ListaProveedores = () => {
         <DataTable
           columns={columns}
           data={data}
-          pagination
           highlightOnHover
+          noDataComponent={
+            <div className="text-center py-6 text-gray-500 text-sm">
+              No hay proveedores disponibles.
+            </div>
+          }
           striped
           customStyles={{
             table: {
@@ -229,10 +239,10 @@ export const ListaProveedores = () => {
         />
       </article>
 
-      {openModal ? (
+      {openModal.agregar ? (
         <Modal
-          open={openModal}
-          onClose={() => setOpenModal(false)}
+          open={openModal.agregar}
+          onClose={() => setOpenModal({ ...openModal, agregar: false })}
           className="flex items-center justify-center mx-6"
         >
           <div className="bg-white rounded-lg shadow-lg p-6 w-130 relative">
@@ -347,6 +357,131 @@ export const ListaProveedores = () => {
                   variant="text"
                 >
                   Agregar proveedor
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Modal>
+      ) : null}
+
+      {openModal.editar ? (
+        <Modal
+          open={openModal.editar}
+          onClose={() => setOpenModal({ ...openModal, editar: false })}
+          className="flex items-center justify-center mx-6"
+        >
+          <div className="bg-white rounded-lg shadow-lg p-6 w-130 relative">
+            <IconButton
+              sx={{
+                position: "absolute",
+                top: "1rem",
+                right: "1rem",
+              }}
+              onClick={() => setOpenModal(false)}
+              aria-label="clear"
+            >
+              <ClearIcon />
+            </IconButton>
+            <div className="flex flex-col items-center">
+              <h2 className="text-2xl font-semibold mb-4">Editar proveedor</h2>
+
+              <div className="w-full flex flex-col gap-4">
+                <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
+                  name="razonSocial"
+                  onChange={handleChange}
+                  fullWidth
+                  id="outlined-basic"
+                  label="Razón social"
+                  variant="outlined"
+                />
+
+                <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
+                  name="ruc"
+                  onChange={handleChange}
+                  fullWidth
+                  id="outlined-basic"
+                  label="RUC"
+                  variant="outlined"
+                />
+
+                <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
+                  name="email"
+                  onChange={handleChange}
+                  label="Email"
+                  multiline
+                  // rows={3}
+                  placeholder="Escribe algo..."
+                  fullWidth
+                />
+
+                <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
+                  name="direccion"
+                  onChange={handleChange}
+                  fullWidth
+                  id="outlined-basic"
+                  label="Dirección"
+                  variant="outlined"
+                />
+
+                <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
+                  name="telefono"
+                  onChange={handleChange}
+                  fullWidth
+                  id="outlined-basic"
+                  label="Teléfono"
+                  variant="outlined"
+                />
+
+                <Button
+                  onClick={agregarProveedor}
+                  sx={{
+                    backgroundColor: "#51b4c3",
+                    color: "#fff",
+                    borderRadius: "1.2rem",
+                  }}
+                  variant="text"
+                >
+                  Editar proveedor
                 </Button>
               </div>
             </div>

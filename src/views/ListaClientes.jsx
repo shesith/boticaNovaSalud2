@@ -4,10 +4,20 @@ import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLoader } from "../context/loaderContext";
+import { services } from "../service/api";
+import { Alert } from "../components/ui/Alert";
+import { AlertSquareConfirm } from "../components/ui/AlertSquareConfirm";
 
 export const ListaClientes = () => {
-  const [openModal, setOpenModal] = useState(false);
+  const { showLoader, hideLoader } = useLoader();
+
+  const [openModal, setOpenModal] = useState({
+    editar: false,
+    agregar: false,
+  });
+  const [dataClientesGet, setDataClientesGet] = useState([]);
   const [dataCliente, setDataCliente] = useState({
     codigo: "",
     nombre: "",
@@ -77,13 +87,13 @@ export const ListaClientes = () => {
       cell: (row) => (
         <div className="flex gap-2">
           <button
-            // onClick={() => setOpenModal({ ...openModal, editar: true })}
+            onClick={() => getEditarCliente(row.id)}
             className="bg-green-500 hover:bg-green-600 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
             <EditIcon fontSize="small" />
           </button>
           <button
-            // onClick={() => eliminarProducto(row.id)}
+            onClick={() => eliminarCliente(row.id)}
             className="bg-red-600 hover:bg-red-700 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
             <DeleteForeverIcon fontSize="small" />
@@ -102,7 +112,86 @@ export const ListaClientes = () => {
     setDataCliente({ ...dataCliente, [name]: value });
   };
 
-  const agregarCliente = async () => {};
+  const getDataClientes = async () => {
+    const responseClientes = await services({
+      method: "GET",
+      service: "http://localhost:5000/",
+    });
+
+    if (responseClientes.status === 200) {
+      setDataClientesGet(responseClientes.data);
+    } else {
+      Alert("error", "Error al obtener los clientes");
+    }
+  };
+
+  const agregarCliente = async () => {
+    showLoader();
+
+    const bodyDataProducto = {
+      // nombre: dataProducto.nombre,
+      // idCategoria: dataProducto.categoria,
+      // presentacion: dataProducto.presentacion,
+      // cantidad: dataProducto.cantidad,
+      // descripcion: dataProducto.descripcion,
+      // precio: dataProducto.precio,
+      // stock: dataProducto.stock,
+    };
+
+    const response = await services({
+      method: "POST",
+      service: "http://localhost:5000/clientes",
+      body: bodyDataProducto,
+    });
+
+    if (response.status === 200) {
+      Alert("success", "Cliente agregaado");
+      getDataClientes();
+    } else {
+      Alert("error", "Error al agregar el cliente");
+    }
+    hideLoader();
+  };
+
+  const getEditarCliente = async (id) => {
+    setOpenModal({ ...openModal, editar: true });
+  };
+
+  const editarCliente = async () => {};
+
+  const eliminarCliente = async (id) => {
+    AlertSquareConfirm({
+      icon: "warning",
+      title: "Atención",
+      text: "¿Estás seguro de que desea eliminar el cliente?",
+      showDeny: true,
+      confirmButtonText: "Salir",
+      denyButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        showLoader();
+        const response = await services({
+          method: "DELETE",
+          // service: `http://localhist:500/producto/${id}`,
+        });
+
+        if (response.status === 200) {
+          Alert("success", "Cliente eliminado con éxito");
+          getDataClientes();
+        } else {
+          Alert("error", "Error al eliminar el cliente");
+        }
+        hideLoader();
+      }
+    });
+  };
+
+  useEffect(() => {
+    function initialData() {
+      getDataClientes();
+    }
+    initialData();
+  }, []);
 
   return (
     <>
@@ -151,7 +240,7 @@ export const ListaClientes = () => {
             </Button>
             <Button
               startIcon={<AddIcon />}
-              onClick={() => setOpenModal(true)}
+              onClick={() => setOpenModal({ ...openModal, agregar: true })}
               variant="contained"
               sx={{
                 borderRadius: ".8rem",
@@ -169,7 +258,11 @@ export const ListaClientes = () => {
         <DataTable
           columns={columns}
           data={data}
-          pagination
+          noDataComponent={
+            <div className="text-center py-6 text-gray-500 text-sm">
+              No hay clientes disponibles.
+            </div>
+          }
           highlightOnHover
           striped
           customStyles={{
@@ -230,10 +323,10 @@ export const ListaClientes = () => {
         />
       </article>
 
-      {openModal ? (
+      {openModal.agregar ? (
         <Modal
-          open={openModal}
-          onClose={() => setOpenModal(false)}
+          open={openModal.agregar}
+          onClose={() => setOpenModal({ ...openModal, agregar: false })}
           className="flex items-center justify-center mx-6"
         >
           <div className="bg-white rounded-lg shadow-lg p-6 w-130 relative">
@@ -336,7 +429,7 @@ export const ListaClientes = () => {
                 />
 
                 <Button
-                  onClick={agregarCliente}
+                  onClick={editarCliente}
                   sx={{
                     backgroundColor: "#51b4c3",
                     color: "#fff",
@@ -345,6 +438,133 @@ export const ListaClientes = () => {
                   variant="text"
                 >
                   Agregar cliente
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Modal>
+      ) : null}
+
+      {openModal.editar ? (
+        <Modal
+          open={openModal.editar}
+          onClose={() => setOpenModal({ ...openModal, editar: false })}
+          className="flex items-center justify-center mx-6"
+        >
+          <div className="bg-white rounded-lg shadow-lg p-6 w-130 relative">
+            <IconButton
+              sx={{
+                position: "absolute",
+                top: "1rem",
+                right: "1rem",
+              }}
+              onClick={() => setOpenModal(false)}
+              aria-label="clear"
+            >
+              <ClearIcon />
+            </IconButton>
+            <div className="flex flex-col items-center">
+              <h2 className="text-2xl font-semibold mb-4">Editar cliente</h2>
+
+              <div className="w-full flex flex-col gap-4">
+                <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
+                  value={dataCliente.codigo}
+                  name="codigo"
+                  onChange={handleChange}
+                  fullWidth
+                  id="outlined-basic"
+                  label="Código"
+                  variant="outlined"
+                />
+                <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
+                  value={dataCliente.nombre}
+                  name="nombre"
+                  onChange={handleChange}
+                  fullWidth
+                  id="outlined-basic"
+                  label="Nombre"
+                  variant="outlined"
+                />
+                <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
+                  value={dataCliente.nodocumento}
+                  name="nodocumento"
+                  onChange={handleChange}
+                  fullWidth
+                  id="outlined-basic"
+                  label="No. documento"
+                  variant="outlined"
+                />
+
+                <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
+                  value={dataCliente.celular}
+                  name="celular"
+                  onChange={handleChange}
+                  fullWidth
+                  id="outlined-basic"
+                  label="Celular"
+                  variant="outlined"
+                />
+                <TextField
+                  InputProps={{
+                    sx: {
+                      borderRadius: "1.2rem",
+                    },
+                  }}
+                  inputProps={{
+                    maxLength: 50,
+                  }}
+                  value={dataCliente.email}
+                  name="email"
+                  onChange={handleChange}
+                  label="Email"
+                  multiline
+                  // rows={3}
+                  placeholder="Escribe algo..."
+                  fullWidth
+                />
+
+                <Button
+                  onClick={editarCliente}
+                  sx={{
+                    backgroundColor: "#51b4c3",
+                    color: "#fff",
+                    borderRadius: "1.2rem",
+                  }}
+                  variant="text"
+                >
+                  Editar cliente
                 </Button>
               </div>
             </div>
