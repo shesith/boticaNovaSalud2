@@ -42,13 +42,13 @@ export const Menu = ({ open, setOpen }) => {
             <path d="M6 6l12 12" />
           </svg>
         </button>
-        <div className="flex items-center gap-2 p-3">
+        <div className="flex items-center gap-2 ml-3 p-3">
           <img
             className="w-16"
             src={getImageUrl("logo-home", "png")}
             alt="logo"
           />
-          <h3 className="text-lg font-bold text-[#51b4c3]">NOVA SALUD</h3>
+          <h3 className="text-[1.8rem] font-bold text-[#51b4c3]">NOVA SALUD</h3>
         </div>
         <ul className="flex-col justify-center px-4 pb-4 text-white">
           <p className="text-xs mb-3 text-[#7b7676]">MÓDULOS</p>

@@ -60,6 +60,7 @@ export const services = ({
   service,
   body,
   formData = false,
+  responseType = "json",
 
   progressFuncion = () => {},
   progressFuncionDown = () => {},
@@ -67,7 +68,10 @@ export const services = ({
   switch (method) {
     case "GET":
       return axiosInstance
-        .get(service, config())
+        .get(service, {
+          ...config(formData, progressFuncion, progressFuncionDown),
+          responseType,
+        })
         .then((r) => {
           return response(r);
         })

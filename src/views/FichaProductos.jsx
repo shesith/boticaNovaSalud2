@@ -135,14 +135,16 @@ export const FichaProductos = () => {
     showLoader();
 
     let typeMethod = "POST";
-
     if (
-      dataProducto.ingredientes !== null ||
-      dataProducto.modoUso !== null ||
-      dataProducto.fechaVencimiento !== null
+      dataProducto.ingredientes &&
+      dataProducto.modoUso &&
+      dataProducto.fechaVencimiento
     ) {
       typeMethod = "PUT";
     }
+
+    console.log(dataProducto);
+    console.log(typeMethod);
 
     const bodyDataProducto = {
       id_producto: dataProducto.productoId,

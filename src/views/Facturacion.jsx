@@ -7,8 +7,14 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useNavigate } from "react-router-dom";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
+import { useEffect, useState } from "react";
+import { useLoader } from "../context/loaderContext";
+import { Alert } from "../components/ui/Alert";
+import { services } from "../service/api";
 
 export const Facturacion = () => {
+  const { showLoader, hideLoader } = useLoader();
+  const [dataFacturas, setDataFacturas] = useState([]);
   const navigate = useNavigate();
   const data = [
     { nombre: "Juan Pérez", email: "juan@example.com", edad: 30 },
@@ -19,7 +25,7 @@ export const Facturacion = () => {
   const columns = [
     {
       name: "FECHA",
-      selector: (row) => row.edad,
+      selector: (row) => row.fecha_emision,
       center: true,
       headerStyle: {
         backgroundColor: "#afdfda",
@@ -28,7 +34,7 @@ export const Facturacion = () => {
     },
     {
       name: "CLIENTE",
-      selector: (row) => row.nombre,
+      selector: (row) => row.cliente_nombre,
       center: true,
       headerStyle: {
         fontWeight: "bold",
@@ -37,7 +43,7 @@ export const Facturacion = () => {
     },
     {
       name: "DOCUMENTO",
-      selector: (row) => row.edad,
+      selector: (row) => row.tipo_voucher_nombre,
       center: true,
       headerStyle: {
         fontWeight: "bold",
@@ -46,7 +52,7 @@ export const Facturacion = () => {
     },
     {
       name: "NÚMERO",
-      selector: (row) => row.edad,
+      selector: (row) => row.numero,
       center: true,
       sortable: true,
       headerStyle: {
@@ -55,8 +61,8 @@ export const Facturacion = () => {
       },
     },
     {
-      name: "TOTAL VENTA",
-      selector: (row) => row.edad,
+      name: "TOTAL FACTURA",
+      selector: (row) => row.total_factura,
       center: true,
       sortable: true,
       headerStyle: {
@@ -70,13 +76,45 @@ export const Facturacion = () => {
       cell: (row) => (
         <div className="flex gap-2">
           <button
-            // onClick={() => setOpenModal({ ...openModal, editar: true })}
+            onClick={async () => {
+              const response = await services({
+                method: "GET",
+                service: `http://localhost:5000/factura/pdf/${row.id_factura}`,
+                responseType: "blob",
+              });
+
+              if (response.status === 200) {
+                const file = new Blob([response.data], {
+                  type: "application/pdf",
+                });
+                const fileURL = URL.createObjectURL(file);
+                window.open(fileURL, "_blank");
+              } else {
+                console.error("Error al obtener el PDF", response);
+              }
+            }}
             className="border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
             <PictureAsPdfIcon fontSize="medium" />
           </button>
           <button
-            // onClick={() => eliminarProducto(row.id)}
+            onClick={async () => {
+              const response = await services({
+                method: "GET",
+                service: `http://localhost:5000/factura/ticket/${row.id_factura}`,
+                responseType: "blob",
+              });
+
+              if (response.status === 200) {
+                const file = new Blob([response.data], {
+                  type: "application/pdf",
+                });
+                const fileURL = URL.createObjectURL(file);
+                window.open(fileURL, "_blank");
+              } else {
+                console.error("Error al obtener el PDF", response);
+              }
+            }}
             className="border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
             <TextSnippetIcon fontSize="medium" />
@@ -89,6 +127,31 @@ export const Facturacion = () => {
       },
     },
   ];
+
+  const getDataFacturas = async () => {
+    showLoader();
+    const response = await services({
+      method: "GET",
+      service: "http://localhost:5000/facturas",
+    });
+
+    console.log(response);
+
+    if (response.status === 200) {
+      Alert("success", "Facturas obtenidas correctamente");
+      setDataFacturas(response.data);
+    } else {
+      Alert("error", "Error al obtener las facturas");
+    }
+    hideLoader();
+  };
+
+  useEffect(() => {
+    function initialData() {
+      getDataFacturas();
+    }
+    initialData();
+  }, []);
 
   return (
     <>
@@ -154,7 +217,7 @@ export const Facturacion = () => {
 
         <DataTable
           columns={columns}
-          data={data}
+          data={dataFacturas}
           highlightOnHover
           striped
           noDataComponent={
