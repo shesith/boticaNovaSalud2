@@ -11,6 +11,9 @@ import SaveAltIcon from "@mui/icons-material/SaveAlt";
 import { useLoader } from "../context/loaderContext";
 import { Alert } from "../components/ui/Alert";
 import { services } from "../service/api";
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 
 export const FichaProductos = () => {
   const { showLoader, hideLoader } = useLoader();
@@ -24,8 +27,17 @@ export const FichaProductos = () => {
     precio: "",
     categoria: "",
     stock: "",
+    ingredientes: "",
+    modoUso: "",
+    fechaVencimiento: "",
+    imagen: "",
   });
   const [image, setImage] = useState(null);
+
+  const categorias = {
+    1: "Antibiótico",
+    2: "Analgesico",
+  };
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -85,25 +97,75 @@ export const FichaProductos = () => {
   const obtenerDataProducto = async (id) => {
     showLoader();
 
+    setDataProducto({
+      ...dataProducto,
+      ingredientes: "",
+      modoUso: "",
+      fechaVencimiento: "",
+    });
+
     const responseGetproduct = await services({
       method: "GET",
-      service: `http://localhost:5000/producto/${id}`,
+      service: `http://localhost:5000/producto-detalles/${id}`,
     });
+
+    console.log(responseGetproduct);
 
     if (responseGetproduct.status === 200) {
       setDataProducto({
         productoId: responseGetproduct.data.id_producto,
-        codigo: responseGetproduct.data.id_producto,
         nombre: responseGetproduct.data.nombre,
-        descripcion: responseGetproduct.data.descripcion,
+        codigo: responseGetproduct.data.id_producto,
         precio: responseGetproduct.data.precio,
+        descripcion: responseGetproduct.data.descripcion,
         categoria: responseGetproduct.data.idCategoria,
         stock: responseGetproduct.data.stock,
+        ingredientes: responseGetproduct.data.ingredientes,
+        modoUso: responseGetproduct.data.modo_uso,
+        fechaVencimiento: responseGetproduct.data.fecha_vencimiento,
+        imagen: responseGetproduct.data.imagen,
       });
     } else {
       Alert("error", "Error al obtener el producto");
     }
     hideLoader();
+  };
+
+  const guardarDetalles = async () => {
+    showLoader();
+
+    let typeMethod = "POST";
+
+    if (
+      dataProducto.ingredientes !== null ||
+      dataProducto.modoUso !== null ||
+      dataProducto.fechaVencimiento !== null
+    ) {
+      typeMethod = "PUT";
+    }
+
+    const bodyDataProducto = {
+      id_producto: dataProducto.productoId,
+      ingredientes: dataProducto.ingredientes,
+      modo_uso: dataProducto.modoUso,
+      fecha_vencimiento: dataProducto.fechaVencimiento,
+      imagen: image.url,
+    };
+
+    console.log(bodyDataProducto);
+
+    const response = await services({
+      method: typeMethod,
+      service: `http://localhost:5000/producto/detalles/${dataProducto.productoId}`,
+      body: bodyDataProducto,
+    });
+
+    if (response.status === 200) {
+      Alert("success", "Detalles guardados");
+      getDataProductos();
+    } else {
+      Alert("error", "Error al obtener las categorías");
+    }
   };
 
   useEffect(() => {
@@ -125,7 +187,7 @@ export const FichaProductos = () => {
               labelId="demo-simple-select-label"
               id="demo-simple-select-label"
               name="idProductoSelected"
-              value={dataProducto.idProductoSelected}
+              value={dataProducto.productoId}
               label="Productos"
               onChange={handleChange}
             >
@@ -192,6 +254,7 @@ export const FichaProductos = () => {
               Descripción
             </InputLabel>
             <TextField
+              disabled
               value={dataProducto?.descripcion}
               sx={{ width: "100%" }}
               InputProps={{
@@ -229,7 +292,7 @@ export const FichaProductos = () => {
               Categoría
             </InputLabel>
             <TextField
-              value={dataProducto?.categoria}
+              value={categorias[dataProducto?.categoria] || "Otra categoría"}
               disabled
               sx={{ width: "100%" }}
               InputProps={{
@@ -261,6 +324,64 @@ export const FichaProductos = () => {
         </div>
       </div>
       <div className="bg-white p-8 rounded-xl shadow-md">
+        <div className="flex flex-col md:flex-row gap-3">
+          <div className="w-full">
+            <InputLabel sx={{ marginBottom: ".5rem" }} id="tipoVehiculo-label">
+              Ingredientes
+            </InputLabel>
+            <TextField
+              name="ingredientes"
+              onChange={handleChange}
+              value={dataProducto?.ingredientes}
+              sx={{ width: "100%" }}
+              InputProps={{
+                sx: {
+                  borderRadius: "1.2rem",
+                },
+              }}
+              id="outlined-basic"
+              variant="outlined"
+            />
+          </div>
+          <div className="w-full">
+            <InputLabel sx={{ marginBottom: ".5rem" }} id="tipoVehiculo-label">
+              Modo de uso
+            </InputLabel>
+            <TextField
+              name="modoUso"
+              onChange={handleChange}
+              value={dataProducto?.modoUso}
+              sx={{ width: "100%" }}
+              InputProps={{
+                sx: {
+                  borderRadius: "1.2rem",
+                },
+              }}
+              id="outlined-basic"
+              variant="outlined"
+            />
+          </div>
+        </div>
+
+        <div className="w-full my-4">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              value={dayjs(dataProducto?.fechaVencimiento)}
+              onChange={(newValue) => {
+                setDataProducto({
+                  ...dataProducto,
+                  fechaVencimiento: newValue.format("YYYY-MM-DD"),
+                });
+
+                console.log(newValue.format("YYYY-MM-DD"));
+              }}
+              renderInput={(params) => (
+                <TextField {...params} sx={{ width: "100%" }} />
+              )}
+            />
+          </LocalizationProvider>
+        </div>
+
         <div className="p-8 space-y-8">
           <h2 className="text-lg font-semibold text-gray-700">Imágenes</h2>
 
@@ -292,11 +413,11 @@ export const FichaProductos = () => {
               </p>
             </div>
 
-            {image && (
+            {image || dataProducto.imagen ? (
               <div className="flex justify-center pt-4">
                 <div className="relative group w-64 h-64">
                   <img
-                    src={image.url}
+                    src={dataProducto.imagen ? dataProducto.imagen : image.url}
                     alt="preview"
                     className="w-full h-full object-cover rounded-xl shadow-lg"
                   />
@@ -308,7 +429,7 @@ export const FichaProductos = () => {
                   </button>
                 </div>
               </div>
-            )}
+            ) : null}
 
             <button className="mt-4 px-6 py-2 bg-[#51B4C3] text-white rounded-xl hover:bg-purple-700">
               Guardar imagen
@@ -316,7 +437,10 @@ export const FichaProductos = () => {
           </div>
 
           <div className="flex justify-end pt-6">
-            <button className="px-6 py-2 bg-[#51B4C3] rounded-xl text-white hover:bg-purple-700">
+            <button
+              onClick={guardarDetalles}
+              className="px-6 py-2 bg-[#51B4C3] rounded-xl text-white hover:bg-purple-700"
+            >
               Guardar Detalles del Producto
             </button>
           </div>

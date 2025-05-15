@@ -35,7 +35,7 @@ export const ListaClientes = () => {
   const columns = [
     {
       name: "CÓDIGO",
-      selector: (row) => row.edad,
+      selector: (row) => row.id_cliente,
       center: true,
       headerStyle: {
         backgroundColor: "#afdfda",
@@ -53,7 +53,7 @@ export const ListaClientes = () => {
     },
     {
       name: "NO. DOCUMENTO",
-      selector: (row) => row.edad,
+      selector: (row) => row.documento,
       center: true,
       headerStyle: {
         fontWeight: "bold",
@@ -62,7 +62,7 @@ export const ListaClientes = () => {
     },
     {
       name: "CELULAR",
-      selector: (row) => row.edad,
+      selector: (row) => row.telefono,
       center: true,
       sortable: true,
       headerStyle: {
@@ -72,7 +72,7 @@ export const ListaClientes = () => {
     },
     {
       name: "EMAIL",
-      selector: (row) => row.edad,
+      selector: (row) => row.email,
       center: true,
       sortable: true,
       headerStyle: {
@@ -87,13 +87,13 @@ export const ListaClientes = () => {
       cell: (row) => (
         <div className="flex gap-2">
           <button
-            onClick={() => editarClienteGetData(row.id)}
+            onClick={() => editarClienteGetData(row.id_cliente)}
             className="bg-green-500 hover:bg-green-600 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
             <EditIcon fontSize="small" />
           </button>
           <button
-            onClick={() => eliminarCliente(row.id)}
+            onClick={() => eliminarCliente(row.id_cliente)}
             className="bg-red-600 hover:bg-red-700 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
           >
             <DeleteForeverIcon fontSize="small" />
@@ -116,7 +116,7 @@ export const ListaClientes = () => {
     showLoader();
     const responseClientes = await services({
       method: "GET",
-      service: "http://localhost:5000/",
+      service: "http://localhost:5000/clientes",
     });
 
     if (responseClientes.status === 200) {
@@ -129,13 +129,7 @@ export const ListaClientes = () => {
   };
 
   const agregarCliente = async () => {
-    const camposRequeridos = [
-      "codigo",
-      "nombre",
-      "nodocumento",
-      "celular",
-      "email",
-    ];
+    const camposRequeridos = ["nombre", "nodocumento", "celular", "email"];
 
     const hayCamposVacios = camposRequeridos.some(
       (campo) => !dataCliente[campo]?.trim()
@@ -148,24 +142,22 @@ export const ListaClientes = () => {
 
     showLoader();
 
-    const bodyDataProducto = {
-      // nombre: dataProducto.nombre,
-      // idCategoria: dataProducto.categoria,
-      // presentacion: dataProducto.presentacion,
-      // cantidad: dataProducto.cantidad,
-      // descripcion: dataProducto.descripcion,
-      // precio: dataProducto.precio,
-      // stock: dataProducto.stock,
+    const bodyDataCliente = {
+      nombre: dataCliente.nombre,
+      documento: dataCliente.nodocumento,
+      telefono: dataCliente.celular,
+      email: dataCliente.email,
     };
 
     const response = await services({
       method: "POST",
       service: "http://localhost:5000/clientes",
-      body: bodyDataProducto,
+      body: bodyDataCliente,
     });
 
     if (response.status === 200) {
       Alert("success", "Cliente agregaado");
+      setOpenModal({ ...openModal, agregar: false });
       getDataClientes();
     } else {
       Alert("error", "Error al agregar el cliente");
@@ -184,11 +176,11 @@ export const ListaClientes = () => {
     if (response.status === 200) {
       setOpenModal({ ...openModal, editar: true });
       setDataCliente({
-        codigo: response.data,
-        nombre: response.data,
-        nodocumento: response.data,
-        celular: response.data,
-        email: response.data,
+        codigo: response.data.id_cliente,
+        nombre: response.data.nombre,
+        nodocumento: response.data.documento,
+        celular: response.data.telefono,
+        email: response.data.email,
       });
     } else {
       Alert("error", "Error al obtener datos del cliente");
@@ -196,7 +188,32 @@ export const ListaClientes = () => {
     hideLoader();
   };
 
-  const editarCliente = async () => {};
+  const editarCliente = async () => {
+    showLoader();
+
+    const bodyDataCliente = {
+      nombre: dataCliente.nombre,
+      documento: dataCliente.nodocumento,
+      telefono: dataCliente.celular,
+      email: dataCliente.email,
+    };
+
+    const response = await services({
+      method: "PUT",
+      service: `http://localhost:5000/clientes/${dataCliente.codigo}`,
+      body: bodyDataCliente,
+    });
+
+    if (response.status === 200) {
+      Alert("success", "Cliente editado con éxito");
+      setOpenModal({ ...openModal, editar: false });
+      getDataClientes();
+    } else {
+      Alert("error", "Error al editar el cliente");
+    }
+
+    hideLoader();
+  };
 
   const eliminarCliente = async (id) => {
     AlertSquareConfirm({
@@ -204,14 +221,14 @@ export const ListaClientes = () => {
       title: "Atención",
       text: "¿Estás seguro de que desea eliminar el cliente?",
       showDeny: true,
-      confirmButtonText: "Salir",
+      confirmButtonText: "Eliminar",
       denyButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
         showLoader();
         const response = await services({
           method: "DELETE",
-          // service: `http://localhist:500/producto/${id}`,
+          service: `http://localhost:5000/clientes/${id}`,
         });
 
         if (response.status === 200) {
@@ -296,7 +313,7 @@ export const ListaClientes = () => {
 
         <DataTable
           columns={columns}
-          data={data}
+          data={dataClientesGet}
           noDataComponent={
             <div className="text-center py-6 text-gray-500 text-sm">
               No hay clientes disponibles.
@@ -384,22 +401,6 @@ export const ListaClientes = () => {
               <h2 className="text-2xl font-semibold mb-4">Agregar cliente</h2>
 
               <div className="w-full flex flex-col gap-4">
-                <TextField
-                  InputProps={{
-                    sx: {
-                      borderRadius: "1.2rem",
-                    },
-                  }}
-                  inputProps={{
-                    maxLength: 50,
-                  }}
-                  name="codigo"
-                  onChange={handleChange}
-                  fullWidth
-                  id="outlined-basic"
-                  label="Código"
-                  variant="outlined"
-                />
                 <TextField
                   InputProps={{
                     sx: {
@@ -506,23 +507,6 @@ export const ListaClientes = () => {
               <h2 className="text-2xl font-semibold mb-4">Editar cliente</h2>
 
               <div className="w-full flex flex-col gap-4">
-                <TextField
-                  InputProps={{
-                    sx: {
-                      borderRadius: "1.2rem",
-                    },
-                  }}
-                  inputProps={{
-                    maxLength: 50,
-                  }}
-                  value={dataCliente.codigo}
-                  name="codigo"
-                  onChange={handleChange}
-                  fullWidth
-                  id="outlined-basic"
-                  label="Código"
-                  variant="outlined"
-                />
                 <TextField
                   InputProps={{
                     sx: {

@@ -287,7 +287,11 @@ export const ListaProductos = () => {
     },
     {
       name: "CATEGORÍA",
-      selector: (row) => row.idCategoria,
+      selector: (row) => {
+        if (row.idCategoria === 1) return "Antibiótico";
+        if (row.idCategoria === 2) return "Analgesico";
+        return "Otra categoría";
+      },
       center: true,
       sortable: true,
       headerStyle: {
@@ -565,7 +569,7 @@ export const ListaProductos = () => {
                       dataCategorias.map((item, index) => (
                         <MenuItem key={index} value={item.id_categoria}>
                           {item.id_categoria === 1
-                            ? "Medicamento"
+                            ? "Antibiótico"
                             : item.id_categoria === 2
                             ? "Analgesico"
                             : "Paracetamol"}

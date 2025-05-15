@@ -17,12 +17,29 @@ import DataTable from "react-data-table-component";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLoader } from "../context/loaderContext";
+import { services } from "../service/api";
+import { Alert } from "../components/ui/Alert";
 
 export const AgregarFacturacion = () => {
+  const { showLoader, hideLoader } = useLoader();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
+  const [dataClientesGet, setDataClientesGet] = useState([]);
+  const [dataMedioPago, setDataMedioPago] = useState([]);
+  const [dataComprobante, setDataComprobante] = useState([]);
+  const [dataProductos, setDataProductos] = useState([]);
+  const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+  const [dataFacturacion, setDataFacturacion] = useState({
+    cliente: "",
+    noDocumento: "",
+    fecha: "",
+    tipoComprobante: "",
+    medioPago: "",
+  });
+
   const data = [
     { nombre: "Juan Pérez", email: "juan@example.com", edad: 30 },
     { nombre: "María López", email: "maria@example.com", edad: 25 },
@@ -32,7 +49,7 @@ export const AgregarFacturacion = () => {
   const columnsSelectProduct = [
     {
       name: "CÓDIGO",
-      selector: (row) => row.edad,
+      selector: (row) => row.id_producto,
       center: true,
       headerStyle: {
         backgroundColor: "#afdfda",
@@ -50,7 +67,7 @@ export const AgregarFacturacion = () => {
     },
     {
       name: "STOCK",
-      selector: (row) => row.edad,
+      selector: (row) => row.stock,
       center: true,
       headerStyle: {
         fontWeight: "bold",
@@ -59,7 +76,7 @@ export const AgregarFacturacion = () => {
     },
     {
       name: "PRECIO",
-      selector: (row) => row.edad,
+      selector: (row) => row.precio,
       center: true,
       sortable: true,
       headerStyle: {
@@ -68,11 +85,11 @@ export const AgregarFacturacion = () => {
       },
     },
     {
-      name: "ACCIÓN ",
+      name: "ACCIÓN",
       center: true,
       cell: (row) => (
         <button
-          // onClick={() => setOpenModal({ ...openModal, editar: true })}
+          onClick={() => handleAgregarProducto(row)}
           className="bg-green-500 hover:bg-green-600 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
         >
           <AddIcon fontSize="small" />
@@ -85,10 +102,26 @@ export const AgregarFacturacion = () => {
     },
   ];
 
+  const handleAgregarProducto = (producto) => {
+    // Agrega a la lista seleccionada (si no existe ya)
+    const yaExiste = productosSeleccionados.some(
+      (item) => item.id_producto === producto.id_producto
+    );
+
+    if (!yaExiste) {
+      setProductosSeleccionados((prev) => [...prev, producto]);
+
+      // Quita temporalmente el producto de la lista visible
+      setDataProductos((prev) =>
+        prev.filter((item) => item.id_producto !== producto.id_producto)
+      );
+    }
+  };
+
   const columns = [
     {
       name: "CODIGO",
-      selector: (row) => row.edad,
+      selector: (row) => row.id_producto,
       center: true,
       headerStyle: {
         backgroundColor: "#afdfda",
@@ -106,7 +139,15 @@ export const AgregarFacturacion = () => {
     },
     {
       name: "CANTIDAD",
-      selector: (row) => row.edad,
+      cell: (row, index) => (
+        <input
+          type="number"
+          min="1"
+          value={row.cantidad || ""}
+          onChange={(e) => handleCantidadChange(index, e.target.value)}
+          className="border rounded px-2 py-1 w-20 text-center"
+        />
+      ),
       center: true,
       headerStyle: {
         fontWeight: "bold",
@@ -115,7 +156,7 @@ export const AgregarFacturacion = () => {
     },
     {
       name: "PRECIO U.",
-      selector: (row) => row.edad,
+      selector: (row) => row.precio,
       center: true,
       sortable: true,
       headerStyle: {
@@ -125,39 +166,137 @@ export const AgregarFacturacion = () => {
     },
     {
       name: "TOTAL VENTA",
-      selector: (row) => row.edad,
       center: true,
-      sortable: true,
-      headerStyle: {
-        fontWeight: "bold",
-        backgroundColor: "#f8f9fa",
+      sortable: false,
+      cell: (row) => {
+        const cantidad = Number(row.cantidad) || 0;
+        const precio = Number(row.precio) || 0;
+        const total = cantidad * precio;
+
+        return <span>${total.toFixed(2)}</span>;
       },
-    },
-    {
-      name: "ACCIONES",
-      center: true,
-      cell: (row) => (
-        <div className="flex gap-2">
-          <button
-            // onClick={() => setOpenModal({ ...openModal, editar: true })}
-            className="bg-green-500 hover:bg-green-600 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
-          >
-            <EditIcon fontSize="small" />
-          </button>
-          <button
-            // onClick={() => eliminarProducto(row.id)}
-            className="bg-red-600 hover:bg-red-700 text-white border-none px-2 py-1 rounded cursor-pointer transition-colors"
-          >
-            <DeleteForeverIcon fontSize="small" />
-          </button>
-        </div>
-      ),
       headerStyle: {
         fontWeight: "bold",
         backgroundColor: "#f8f9fa",
       },
     },
   ];
+
+  const handleCantidadChange = (index, nuevaCantidad) => {
+    const actualizados = [...productosSeleccionados];
+    actualizados[index].cantidad = Number(nuevaCantidad); // actualiza cantidad
+    setProductosSeleccionados(actualizados); // o setDataProductos si es otro nombre
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "cliente") {
+      const clienteSeleccionado = dataClientesGet.find(
+        (cliente) => cliente.id_cliente === value
+      );
+
+      setDataFacturacion({
+        ...dataFacturacion,
+        cliente: value,
+        noDocumento: clienteSeleccionado?.documento || "",
+      });
+    } else if (name === "medioPago") {
+      const medioSeleccionado = dataMedioPago.find(
+        (medio) => medio.id_medio_pago === value
+      );
+
+      setDataFacturacion({
+        ...dataFacturacion,
+        medioPago: value,
+        nombreMedioPago: medioSeleccionado?.nombre || "",
+      });
+    } else if (name === "tipoComprobante") {
+      const comprobanteSeleccionado = dataComprobante.find(
+        (comprobante) => comprobante.id_tipo_comprobante === value
+      );
+
+      setDataFacturacion({
+        ...dataFacturacion,
+        tipoComprobante: value,
+        nombreComprobante: comprobanteSeleccionado?.nombre || "",
+      });
+    } else {
+      setDataFacturacion({ ...dataFacturacion, [name]: value });
+    }
+  };
+  const getDataClientes = async () => {
+    showLoader();
+    const responseClientes = await services({
+      method: "GET",
+      service: "http://localhost:5000/clientes",
+    });
+
+    if (responseClientes.status === 200) {
+      Alert("success", "Clientes obtenidos correctamente");
+      setDataClientesGet(responseClientes.data);
+    } else {
+      Alert("error", "Error al obtener los clientes");
+    }
+    hideLoader();
+  };
+
+  const getMediopago = async () => {
+    showLoader();
+    const response = await services({
+      method: "GET",
+      service: "http://localhost:5000/medio-pago",
+    });
+
+    if (response.status === 200) {
+      Alert("success", "Clientes obtenidos correctamente");
+      setDataMedioPago(response.data);
+    } else {
+      Alert("error", "Error al obtener los clientes");
+    }
+    hideLoader();
+  };
+
+  const getTipoComprobante = async () => {
+    showLoader();
+    const response = await services({
+      method: "GET",
+      service: "http://localhost:5000/documentos",
+    });
+
+    if (response.status === 200) {
+      Alert("success", "Clientes obtenidos correctamente");
+      setDataComprobante(response.data);
+    } else {
+      Alert("error", "Error al obtener los clientes");
+    }
+    hideLoader();
+  };
+
+  const getDataProducto = async () => {
+    showLoader();
+    const response = await services({
+      method: "GET",
+      service: "http://localhost:5000/productos",
+    });
+
+    if (response.status === 200) {
+      Alert("success", "Productos obtenidos correctamente");
+      setDataProductos(response.data);
+      setOpenModal(true);
+    } else {
+      Alert("error", "Error al obtener los clientes");
+    }
+    hideLoader();
+  };
+
+  useEffect(() => {
+    function initialData() {
+      getDataClientes();
+      getMediopago();
+      getTipoComprobante();
+    }
+    initialData();
+  }, []);
 
   return (
     <>
@@ -172,22 +311,30 @@ export const AgregarFacturacion = () => {
         {/* FORMULARIO */}
         <div className="flex flex-col md:flex-row gap-3">
           <div className="w-full">
-            <InputLabel sx={{ marginBottom: ".5rem" }} id="tipoVehiculo-label">
+            <InputLabel sx={{ marginBottom: ".5rem" }} id="cliente-label">
               Cliente
             </InputLabel>
-            <TextField
-              sx={{ width: "100%" }}
-              id="outlined-basic"
-              inputProps={{
-                maxLength: 50,
-              }}
-              InputProps={{
-                sx: {
-                  borderRadius: "1.2rem",
-                },
-              }}
-              variant="outlined"
-            />
+            <FormControl fullWidth>
+              <Select
+                sx={{ borderRadius: "1.2rem" }}
+                labelId="cliente-label"
+                name="cliente"
+                id="cliente"
+                value={dataFacturacion.cliente || ""}
+                onChange={handleChange}
+              >
+                {Array.isArray(dataClientesGet) &&
+                dataClientesGet.length > 0 ? (
+                  dataClientesGet.map((item, index) => (
+                    <MenuItem key={index} value={item?.id_cliente}>
+                      {item?.nombre}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No hay clientes disponibles</MenuItem>
+                )}
+              </Select>
+            </FormControl>
           </div>
 
           <div className="w-full">
@@ -195,6 +342,8 @@ export const AgregarFacturacion = () => {
               N° Documento
             </InputLabel>
             <TextField
+              disabled
+              value={dataFacturacion.noDocumento}
               sx={{ width: "100%" }}
               InputProps={{
                 sx: {
@@ -221,41 +370,67 @@ export const AgregarFacturacion = () => {
             />
           </LocalizationProvider>
 
-          <FormControl fullWidth>
-            <InputLabel id="tipo-comprobante-label">
+          <div className="w-full">
+            <InputLabel
+              sx={{ marginBottom: ".5rem" }}
+              id="tipo-comprobante-label"
+            >
               Tipo comprobante
             </InputLabel>
-            <Select
-              sx={{ borderRadius: "1.2rem" }}
-              labelId="tipo-comprobante-label"
-              id="tipo-comprobante"
-              label="Tipo comprobante"
-            >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
+            <FormControl fullWidth>
+              <Select
+                sx={{ borderRadius: "1.2rem" }}
+                labelId="tipo-comprobante-label"
+                id="tipo-comprobante"
+                name="tipoComprobante"
+                value={dataFacturacion.tipoComprobante || ""}
+                onChange={handleChange}
+              >
+                {Array.isArray(dataComprobante) &&
+                dataComprobante.length > 0 ? (
+                  dataComprobante.map((item, index) => (
+                    <MenuItem key={index} value={item?.id_doc}>
+                      {item?.nombre}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No hay clientes disponibles</MenuItem>
+                )}
+              </Select>
+            </FormControl>
+          </div>
 
-          <FormControl fullWidth>
-            <InputLabel id="medio-pago-label">Medio de pago</InputLabel>
-            <Select
-              sx={{ borderRadius: "1.2rem" }}
-              labelId="medio-pago-label"
-              id="medio-pago"
-              label="Medio de pago"
-            >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
+          <div className="w-full">
+            <InputLabel sx={{ marginBottom: ".5rem" }} id="medioPago-label">
+              Medio de pago
+            </InputLabel>
+            <FormControl fullWidth>
+              <Select
+                sx={{ borderRadius: "1.2rem" }}
+                labelId="medioPago-label"
+                name="medioPago"
+                id="medioPago"
+                value={dataFacturacion.medioPago || ""}
+                onChange={handleChange}
+              >
+                {Array.isArray(dataMedioPago) && dataMedioPago.length > 0 ? (
+                  dataMedioPago.map((item, index) => (
+                    <MenuItem key={index} value={item?.id_medio_pago}>
+                      {item?.nombre}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No hay clientes disponibles</MenuItem>
+                )}
+              </Select>
+            </FormControl>
+          </div>
         </div>
 
         <div className="w-full mb-4">
           <Button
             startIcon={<AddIcon />}
-            onClick={() => setOpenModal(true)}
+            onClick={() => getDataProducto()}
             variant="contained"
             sx={{
               borderRadius: ".8rem",
@@ -271,7 +446,12 @@ export const AgregarFacturacion = () => {
 
         <DataTable
           columns={columns}
-          data={data}
+          data={productosSeleccionados}
+          noDataComponent={
+            <div className="text-center py-6 text-gray-500 text-sm ">
+              No hay productos disponibles.
+            </div>
+          }
           pagination
           highlightOnHover
           striped
@@ -332,7 +512,7 @@ export const AgregarFacturacion = () => {
           }}
         />
 
-        <div className="flex gap-2 w-full mb-4">
+        <div className="flex gap-2 w-full my-4">
           <Button
             // onClick={() => navigate("agregar-facturacion")}
             variant="contained"
@@ -369,7 +549,7 @@ export const AgregarFacturacion = () => {
           onClose={() => setOpenModal(false)}
           className="flex items-center justify-center mx-6"
         >
-          <div className="bg-white rounded-lg shadow-lg p-6  relative">
+          <div className="bg-white rounded-lg shadow-lg p-6 relative">
             <IconButton
               sx={{
                 position: "absolute",
@@ -382,12 +562,10 @@ export const AgregarFacturacion = () => {
               <ClearIcon />
             </IconButton>
             <div className="flex flex-col items-center">
-              <h2 className="text-2xl font-semibold mb-4">
-                Seleccionar producto
-              </h2>
+              <h2 className="text-2xl font-semibold mb-4">Productos</h2>
               <DataTable
                 columns={columnsSelectProduct}
-                data={data}
+                data={dataProductos}
                 pagination
                 highlightOnHover
                 striped
