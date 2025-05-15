@@ -12,13 +12,13 @@ export const Menu = ({ open, setOpen }) => {
     <>
       <div
         onClick={() => setOpen(false)}
-        className={`fixed inset-0 bg-black z-40 md:hidden transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-black md:hidden transition-opacity duration-300 z-[1000] ${
           open ? "opacity-50" : "opacity-0 pointer-events-none"
         }`}
       ></div>
 
       <nav
-        className={`bg-white md:shadow-xl w-65 top-0 left-0 h-screen fixed md:static z-50 md:w-90 transition-transform duration-300 transform ${
+        className={`bg-white md:shadow-xl w-65 top-0 left-0 h-screen fixed md:w-90 transition-transform duration-300 transform z-[1001] ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >

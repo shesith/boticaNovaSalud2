@@ -364,16 +364,18 @@ export const FichaProductos = () => {
         </div>
 
         <div className="w-full my-4">
+          <InputLabel sx={{ marginBottom: ".5rem" }} id="cliente-label">
+            Fecha
+          </InputLabel>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
+              className="w-100"
               value={dayjs(dataProducto?.fechaVencimiento)}
               onChange={(newValue) => {
                 setDataProducto({
                   ...dataProducto,
                   fechaVencimiento: newValue.format("YYYY-MM-DD"),
                 });
-
-                console.log(newValue.format("YYYY-MM-DD"));
               }}
               renderInput={(params) => (
                 <TextField {...params} sx={{ width: "100%" }} />

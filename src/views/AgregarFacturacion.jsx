@@ -360,15 +360,19 @@ export const AgregarFacturacion = () => {
         </div>
 
         <div className="flex flex-col md:flex-row gap-3 my-4">
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              className="w-full"
-              label="Fecha"
-              value={dayjs()}
-              onChange={(newValue) => console.log(newValue)}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </LocalizationProvider>
+          <div className="w-full">
+            <InputLabel sx={{ marginBottom: ".5rem" }} id="cliente-label">
+              Fecha
+            </InputLabel>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                className="w-full"
+                value={dayjs()}
+                onChange={(newValue) => console.log(newValue)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </div>
 
           <div className="w-full">
             <InputLabel
