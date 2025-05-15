@@ -323,7 +323,7 @@ export const FichaProductos = () => {
           </div>
         </div>
       </div>
-      <div className="bg-white p-8 rounded-xl shadow-md">
+      <div className="bg-white p-8 rounded-xl shadow-md mb-4">
         <div className="flex flex-col md:flex-row gap-3">
           <div className="w-full">
             <InputLabel sx={{ marginBottom: ".5rem" }} id="tipoVehiculo-label">
@@ -361,27 +361,26 @@ export const FichaProductos = () => {
               variant="outlined"
             />
           </div>
-        </div>
-
-        <div className="w-full my-4">
-          <InputLabel sx={{ marginBottom: ".5rem" }} id="cliente-label">
-            Fecha
-          </InputLabel>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              className="w-100"
-              value={dayjs(dataProducto?.fechaVencimiento)}
-              onChange={(newValue) => {
-                setDataProducto({
-                  ...dataProducto,
-                  fechaVencimiento: newValue.format("YYYY-MM-DD"),
-                });
-              }}
-              renderInput={(params) => (
-                <TextField {...params} sx={{ width: "100%" }} />
-              )}
-            />
-          </LocalizationProvider>
+          <div className="w-full">
+            <InputLabel sx={{ marginBottom: ".5rem" }} id="cliente-label">
+              Fecha
+            </InputLabel>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                className="w-100"
+                value={dayjs(dataProducto?.fechaVencimiento)}
+                onChange={(newValue) => {
+                  setDataProducto({
+                    ...dataProducto,
+                    fechaVencimiento: newValue.format("YYYY-MM-DD"),
+                  });
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} sx={{ width: "100%" }} />
+                )}
+              />
+            </LocalizationProvider>
+          </div>
         </div>
 
         <div className="p-8 space-y-8">
@@ -397,7 +396,7 @@ export const FichaProductos = () => {
             onDragOver={handleDragOver}
           >
             <div className="flex flex-col items-center justify-center space-y-2">
-              <label className="cursor-pointer text-sm text-gray-500 hover:text-purple-500">
+              <label className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
                 Abrir explorador de archivos
                 <input
                   type="file"
@@ -407,9 +406,6 @@ export const FichaProductos = () => {
                 />
               </label>
 
-              <div className="rounded-xl bg-gray-200 p-2">
-                <SaveAltIcon />
-              </div>
               <p className="text-gray-400">
                 Arrastrar y soltar la imagen aquí.
               </p>
@@ -432,16 +428,12 @@ export const FichaProductos = () => {
                 </div>
               </div>
             ) : null}
-
-            <button className="mt-4 px-6 py-2 bg-[#51B4C3] text-white rounded-xl hover:bg-purple-700">
-              Guardar imagen
-            </button>
           </div>
 
           <div className="flex justify-end pt-6">
             <button
               onClick={guardarDetalles}
-              className="px-6 py-2 bg-[#51B4C3] rounded-xl text-white hover:bg-purple-700"
+              className="px-6 py-2 bg-[#51B4C3] rounded-xl text-white hover:bg-[#689299] cursor-pointer"
             >
               Guardar Detalles del Producto
             </button>
