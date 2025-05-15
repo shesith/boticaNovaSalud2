@@ -78,6 +78,7 @@ export const FichaProductos = () => {
       setDataProducto({ ...dataProducto, [name]: value });
     }
   };
+
   const getDataProductos = async () => {
     showLoader();
     const responseProductos = await services({
@@ -108,8 +109,6 @@ export const FichaProductos = () => {
       method: "GET",
       service: `http://localhost:5000/producto-detalles/${id}`,
     });
-
-    console.log(responseGetproduct);
 
     if (responseGetproduct.status === 200) {
       setDataProducto({
@@ -146,28 +145,37 @@ export const FichaProductos = () => {
     console.log(dataProducto);
     console.log(typeMethod);
 
-    const bodyDataProducto = {
-      id_producto: dataProducto.productoId,
-      ingredientes: dataProducto.ingredientes,
-      modo_uso: dataProducto.modoUso,
-      fecha_vencimiento: dataProducto.fechaVencimiento,
-      imagen: image.url,
-    };
+    const formData = new FormData();
+    formData.append("id_producto", dataProducto.productoId);
+    formData.append("ingredientes", dataProducto.ingredientes || "");
+    formData.append("modo_uso", dataProducto.modoUso || "");
+    formData.append("fecha_vencimiento", dataProducto.fechaVencimiento || "");
 
-    console.log(bodyDataProducto);
+    if (image?.file) {
+      formData.append("imagen", image.file);
+    }
+
+    console.log(formData);
+    console.log(typeMethod);
+    console.log(dataProducto);
 
     const response = await services({
       method: typeMethod,
       service: `http://localhost:5000/producto/detalles/${dataProducto.productoId}`,
-      body: bodyDataProducto,
+      body: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
 
     if (response.status === 200) {
       Alert("success", "Detalles guardados");
       getDataProductos();
     } else {
-      Alert("error", "Error al obtener las categorías");
+      Alert("error", "Error al guardar los detalles");
     }
+
+    hideLoader();
   };
 
   useEffect(() => {
@@ -294,7 +302,7 @@ export const FichaProductos = () => {
               Categoría
             </InputLabel>
             <TextField
-              value={categorias[dataProducto?.categoria] || "Otra categoría"}
+              value={categorias[dataProducto?.categoria]}
               disabled
               sx={{ width: "100%" }}
               InputProps={{
@@ -363,26 +371,24 @@ export const FichaProductos = () => {
               variant="outlined"
             />
           </div>
-          <div className="w-full">
-            <InputLabel sx={{ marginBottom: ".5rem" }} id="cliente-label">
-              Fecha
-            </InputLabel>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                className="w-100"
-                value={dayjs(dataProducto?.fechaVencimiento)}
-                onChange={(newValue) => {
-                  setDataProducto({
-                    ...dataProducto,
-                    fechaVencimiento: newValue.format("YYYY-MM-DD"),
-                  });
-                }}
-                renderInput={(params) => (
-                  <TextField {...params} sx={{ width: "100%" }} />
-                )}
-              />
-            </LocalizationProvider>
-          </div>
+        </div>
+        <div className="mt-4">
+          <InputLabel sx={{ marginBottom: ".5rem" }} id="cliente-label">
+            Fecha
+          </InputLabel>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              className="w-full md:w-auto"
+              value={dayjs(dataProducto?.fechaVencimiento)}
+              onChange={(newValue) => {
+                setDataProducto({
+                  ...dataProducto,
+                  fechaVencimiento: newValue.format("YYYY-MM-DD"),
+                });
+              }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
         </div>
 
         <div className="p-8 space-y-8">

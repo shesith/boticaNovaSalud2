@@ -54,9 +54,10 @@ function App() {
   return (
     <>
       <LoaderProvider>
-        {/* {isAuthenticated() && !isLoginPage && <RenderPrincipal />} */}
         <Loader />
-        <Chatbot />
+
+        {isAuthenticated() && !isLoginPage && <Chatbot />}
+
         <Routes>
           <Route path="/" element={<Login />} />
           <Route element={<PrivateRouteWithLayout />}>
