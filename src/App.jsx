@@ -13,6 +13,7 @@ import { ListaClientes } from "./views/ListaClientes";
 import { Facturacion } from "./views/Facturacion";
 import { AgregarFacturacion } from "./views/AgregarFacturacion";
 import { ListaProveedores } from "./views/ListaProveedores";
+import { RegistroUsuario } from "./views/RegistroUsuario";
 
 function App() {
   const isAuthenticated = () => {
@@ -60,6 +61,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/registro-usuario" element={<RegistroUsuario />} />
           <Route element={<PrivateRouteWithLayout />}>
             <Route path="/home-admin" element={<HomeAdmin />} />
             <Route path="/lista-productos" element={<ListaProductos />} />
