@@ -45,17 +45,19 @@ export const Menu = ({ open, setOpen }) => {
         <div className="flex items-center gap-2 ml-3 p-3">
           <img
             className="w-16"
-            src={getImageUrl("logo-home", "png")}
+            src={getImageUrl("logo-escuela", "png")}
             alt="logo"
           />
-          <h3 className="text-[1.8rem] font-bold text-[#51b4c3]">NOVA SALUD</h3>
+          <h3 className="text-[1.5rem] font-bold text-[#8c3836]">
+            MUNICIPALIDAD PROVINCIAL DE YAU
+          </h3>
         </div>
         <ul className="flex-col justify-center px-4 pb-4 text-white">
           <p className="text-xs mb-3 text-[#7b7676]">MÓDULOS</p>
           <NavLink
             to="/home-admin"
-            className={`bg-[#51b4c3] p-2.5 cursor-pointer flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50 ${
-              location.pathname === "/home-admin" ? "bg-[#AFDFDA]" : ""
+            className={`bg-[#848d71] p-2.5 cursor-pointer flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50 ${
+              location.pathname === "/home-admin" ? "bg-[#63201e]" : ""
             }`}
           >
             <svg
@@ -76,7 +78,7 @@ export const Menu = ({ open, setOpen }) => {
             </svg>
             Home
           </NavLink>
-          <li className="bg-[#51b4c3] p-2.5 flex items-center gap-1 rounded-xl mb-2">
+          <li className="bg-[#848d71] p-2.5 flex items-center gap-1 rounded-xl mb-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -100,8 +102,8 @@ export const Menu = ({ open, setOpen }) => {
           </li>
           <NavLink
             to="/lista-productos"
-            className={`bg-[#51b4c3] p-2.5 cursor-pointer flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50 ${
-              location.pathname === "/lista-productos" ? "bg-[#AFDFDA]" : ""
+            className={`bg-[#848d71] p-2.5 cursor-pointer flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50 ${
+              location.pathname === "/lista-productos" ? "bg-[#63201e]" : ""
             }`}
           >
             <svg
@@ -123,8 +125,8 @@ export const Menu = ({ open, setOpen }) => {
           </NavLink>
           <NavLink
             to="/ficha-productos"
-            className={`bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50 ${
-              location.pathname === "/ficha-productos" ? "bg-[#AFDFDA]" : ""
+            className={`bg-[#848d71] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50 ${
+              location.pathname === "/ficha-productos" ? "bg-[#63201e]" : ""
             }`}
           >
             <svg
@@ -144,7 +146,7 @@ export const Menu = ({ open, setOpen }) => {
             </svg>
             Ficha productos
           </NavLink>
-          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2">
+          <li className="bg-[#848d71] p-2.5  flex items-center gap-1 rounded-xl mb-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -168,8 +170,8 @@ export const Menu = ({ open, setOpen }) => {
           </li>
           <NavLink
             to="/lista-clientes"
-            className={`bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50 ${
-              location.pathname === "/lista-clientes" ? "bg-[#AFDFDA]" : ""
+            className={`bg-[#848d71] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50 ${
+              location.pathname === "/lista-clientes" ? "bg-[#63201e]" : ""
             }`}
           >
             <svg
@@ -191,8 +193,8 @@ export const Menu = ({ open, setOpen }) => {
           </NavLink>
           <NavLink
             to="/facturacion"
-            className={`bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50 ${
-              location.pathname === "/facturacion" ? "bg-[#AFDFDA]" : ""
+            className={`bg-[#848d71] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50 ${
+              location.pathname === "/facturacion" ? "bg-[#63201e]" : ""
             }`}
           >
             <svg
@@ -212,7 +214,7 @@ export const Menu = ({ open, setOpen }) => {
             </svg>
             Facturación
           </NavLink>
-          <li className="bg-[#51b4c3] p-2.5  flex items-center gap-1 rounded-xl mb-2 ">
+          <li className="bg-[#848d71] p-2.5  flex items-center gap-1 rounded-xl mb-2 ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -235,8 +237,8 @@ export const Menu = ({ open, setOpen }) => {
           </li>
           <NavLink
             to="/lista-proveedores"
-            className={`bg-[#51b4c3] p-2.5 flex items-center gap-1 rounded-xl mb-2 hover:bg-[#afdfda] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50  ${
-              location.pathname === "/lista-proveedores" ? "bg-[#AFDFDA]" : ""
+            className={`bg-[#848d71] p-2.5 flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50  ${
+              location.pathname === "/lista-proveedores" ? "bg-[#63201e]" : ""
             }`}
           >
             <svg

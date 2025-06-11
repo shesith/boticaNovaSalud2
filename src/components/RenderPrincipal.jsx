@@ -28,7 +28,7 @@ export const RenderPrincipal = () => {
       <div className="flex">
         <Menu open={open} setOpen={setOpen} />
         <div className="flex flex-col w-full md:pl-[390px] px-4 transition-all duration-300">
-          <header className="bg-[#51b4c3] h-10 py-8 px-5 rounded-lg w-full mt-4 flex items-center justify-between md:justify-end">
+          <header className="bg-[#a4a5a9] h-10 py-8 px-5 rounded-lg w-full mt-4 flex items-center justify-between md:justify-end">
             <button
               onClick={() => setOpen(true)}
               className="cursor-pointer md:hidden"
@@ -57,9 +57,9 @@ export const RenderPrincipal = () => {
                 Administrador
               </p>
               <img
-                className="w-12"
-                src={getImageUrl("icon-admin", "svg")}
-                alt=""
+                className="w-8 ms-2"
+                src={getImageUrl("administrador-icon", "png")}
+                alt="Icono administrador"
               />
             </div>
           </header>

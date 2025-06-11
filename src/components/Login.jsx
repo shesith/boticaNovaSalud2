@@ -9,7 +9,6 @@ import { useLoader } from "../context/loaderContext";
 
 export const Login = () => {
   const navigate = useNavigate();
-  const { showLoader, hideLoader } = useLoader();
   const [toggleSede, setToggleSede] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [dataLogin, setDataLogin] = useState({
@@ -29,24 +28,27 @@ export const Login = () => {
       // showLoader();
       return;
     }
+    localStorage.setItem("access_granted", "true");
+    setToggleSede(true);
+    // localStorage.setItem("user", JSON.stringify(response.data));
 
-    const response = await services({
-      method: "POST",
-      service: "http://localhost:3000/login",
-      body: {
-        nombre: dataLogin.nombre,
-        password: dataLogin.password,
-      },
-    });
+    // const response = await services({
+    //   method: "POST",
+    //   service: "http://localhost:3000/login",
+    //   body: {
+    //     nombre: dataLogin.nombre,
+    //     password: dataLogin.password,
+    //   },
+    // });
 
-    if (response.status === 200) {
-      Alert("success", "Inicio de sesión exitoso");
-      localStorage.setItem("access_granted", "true");
-      localStorage.setItem("user", JSON.stringify(response.data));
-      setToggleSede(true);
-    } else {
-      Alert("error", response.data.error);
-    }
+    // if (response.status === 200) {
+    //   Alert("success", "Inicio de sesión exitoso");
+    //   localStorage.setItem("access_granted", "true");
+    //   localStorage.setItem("user", JSON.stringify(response.data));
+    //   setToggleSede(true);
+    // } else {
+    //   Alert("error", "Ocurrio un error al iniciar sesión");
+    // }
   };
 
   return (
@@ -54,10 +56,10 @@ export const Login = () => {
       <div className="flex-col flex justify-center items-center gap-8 lg:flex-row ">
         <img
           className="hidden lg:block w-110"
-          src={getImageUrl("logo", "svg")}
+          src={getImageUrl("logo-escuela", "png")}
           alt="logo"
         />
-        <div className="border-4 p-10 rounded-2xl border-[#63c2b7] mx-4 h-100 lg:w-100 flex flex-col justify-center bg-white shadow-md">
+        <div className="border-2 p-10 border-black mx-4 lg:w-100 flex flex-col justify-center bg-white shadow-md">
           <h1 className="text-[#7b7676] text-lg mb-4 text-center font-bold">
             Bienvenido👋
           </h1>
@@ -66,6 +68,18 @@ export const Login = () => {
               <p className="text-[#7b7676] mb-6">
                 ✔ Inicie sesión para ingresar al sistema
               </p>
+
+              <label htmlFor="tipo-usuario" className="block  text-[#7b7676]">
+                Seleccione tipo de usuario.
+              </label>
+              <select
+                id="tipo-usuario"
+                className=" border-[#7b7676] mt-2 border text-gray-900 text-sm rounded-3xl block w-full p-2.5 mb-4 cursor-pointer"
+              >
+                <option selected>Seleccionar</option>
+                <option value="US">Calle 01</option>
+                <option value="CA">Calle 02</option>
+              </select>
 
               <label
                 htmlFor="first_name"
@@ -129,7 +143,7 @@ export const Login = () => {
               <p className="text-[#7b7676]">Selecciona sede a ingresar</p>
               <select
                 id="countries"
-                className=" border-[#7b7676] mt-2 border text-gray-900 text-sm rounded-3xl block w-full p-2.5"
+                className=" border-[#7b7676] mt-2 border text-gray-900 text-sm rounded-3xl block w-full p-2.5 cursor-pointer"
               >
                 <option selected>Seleccionar</option>
                 <option value="US">Calle 01</option>
@@ -141,7 +155,7 @@ export const Login = () => {
           <button
             onClick={() => iniciarSesion(toggleSede ? "sede" : "login")}
             type="submit"
-            className="text-white bg-[#63c2b7] hover:bg-[#52a89d] font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center cursor-pointer mt-6 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#63c2b7]/50"
+            className="text-white bg-[#a6915d] hover:bg-[#beae83] font-medium rounded-lg text-sm w-full px-5 py-4 text-center cursor-pointer mt-6 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#a6915d]/50"
           >
             {toggleSede ? "Continuar" : "Iniciar Sesión"}
           </button>
