@@ -83,9 +83,17 @@ export const Menu = ({ open, setOpen }) => {
             {getCredentials().tipo_usuario === "admin" ? "Dashboard" : "Home"}
           </NavLink>
           <NavLink
-            to="/solicitar-tramite"
+            to={`${
+              getCredentials().tipo_usuario === "admin"
+                ? "/gestion-tramites"
+                : "/solicitar-tramite"
+            }`}
             className={`bg-[#848d71] p-2.5 cursor-pointer flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50 ${
-              location.pathname === "/solicitar-tramite" ? "bg-[#63201e]" : ""
+              ["/solicitar-tramite", "/gestion-tramites"].includes(
+                location.pathname
+              )
+                ? "bg-[#63201e]"
+                : ""
             }`}
           >
             <svg

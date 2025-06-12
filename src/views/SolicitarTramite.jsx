@@ -115,14 +115,6 @@ export const SolicitarTramite = () => {
     initialData();
   }, []);
 
-  useEffect(() => {
-    console.log(formDinamico);
-  }, [formDinamico]);
-
-  useEffect(() => {
-    console.log("Tipo de trámite seleccionado:", data.tipoTramiteSelected);
-  }, [data.tipoTramiteSelected]);
-
   return (
     <article className="container mx-auto py-6 bg-white p-4 rounded-2xl mb-4 shadow-md">
       <div className="ms-4">
@@ -155,7 +147,7 @@ export const SolicitarTramite = () => {
               {item.campo}
             </label>
 
-            {item.tipo_dato === "texto" && (
+            {item.tipo_dato === "input" && (
               <input
                 type="text"
                 name={item.campo}
@@ -185,7 +177,7 @@ export const SolicitarTramite = () => {
               />
             )}
 
-            {item.tipo_dato.toLowerCase() === "sí/no" && (
+            {item.tipo_dato.toLowerCase() === "select" && (
               <select
                 name={item.campo}
                 className="w-full p-2 border rounded-lg"

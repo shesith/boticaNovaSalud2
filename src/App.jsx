@@ -15,6 +15,7 @@ import { AgregarFacturacion } from "./views/AgregarFacturacion";
 import { ListaProveedores } from "./views/ListaProveedores";
 import { RegistroUsuario } from "./views/RegistroUsuario";
 import { SolicitarTramite } from "./views/solicitarTramite";
+import { GestionTramites } from "./views/GestionTramites";
 
 function App() {
   const isAuthenticated = () => {
@@ -70,6 +71,7 @@ function App() {
           <Route element={<PrivateRouteWithLayout />}>
             <Route path="/home-admin" element={<HomeAdmin />} />
             <Route path="/solicitar-tramite" element={<SolicitarTramite />} />
+            <Route path="/gestion-tramites" element={<GestionTramites />} />
             {/* <Route path="/lista-productos" element={<ListaProductos />} /> */}
             {/* <Route path="/ficha-productos" element={<FichaProductos />} />
             <Route path="/lista-clientes" element={<ListaClientes />} />
