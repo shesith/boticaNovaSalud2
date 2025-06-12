@@ -14,6 +14,7 @@ import { Facturacion } from "./views/Facturacion";
 import { AgregarFacturacion } from "./views/AgregarFacturacion";
 import { ListaProveedores } from "./views/ListaProveedores";
 import { RegistroUsuario } from "./views/RegistroUsuario";
+import { SolicitarTramite } from "./views/solicitarTramite";
 
 function App() {
   const isAuthenticated = () => {
@@ -31,6 +32,7 @@ function App() {
 
   const location = useLocation();
   const isLoginPage = location.pathname === "/";
+  const isRegister = location.pathname === "/registro-usuario";
 
   function PrivateRouteWithLayout() {
     const isAuthorized = localStorage.getItem("access_granted") === "true";
@@ -44,7 +46,10 @@ function App() {
   }
 
   useEffect(() => {
-    if (location.pathname === "/") {
+    if (
+      location.pathname === "/" ||
+      location.pathname === "/registro-usuario"
+    ) {
       const access = localStorage.getItem("access_granted");
       if (!access || access === "false") {
         localStorage.clear();
@@ -57,22 +62,23 @@ function App() {
       <LoaderProvider>
         <Loader />
 
-        {isAuthenticated() && !isLoginPage && <Chatbot />}
+        {isAuthenticated() && !isLoginPage && !isRegister && <Chatbot />}
 
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/registro-usuario" element={<RegistroUsuario />} />
           <Route element={<PrivateRouteWithLayout />}>
             <Route path="/home-admin" element={<HomeAdmin />} />
-            <Route path="/lista-productos" element={<ListaProductos />} />
-            <Route path="/ficha-productos" element={<FichaProductos />} />
+            <Route path="/solicitar-tramite" element={<SolicitarTramite />} />
+            {/* <Route path="/lista-productos" element={<ListaProductos />} /> */}
+            {/* <Route path="/ficha-productos" element={<FichaProductos />} />
             <Route path="/lista-clientes" element={<ListaClientes />} />
-            <Route path="/facturacion" element={<Facturacion />} />
-            <Route
+            <Route path="/facturacion" element={<Facturacion />} /> */}
+            {/* <Route
               path="/facturacion/agregar-facturacion"
               element={<AgregarFacturacion />}
-            />
-            <Route path="/lista-proveedores" element={<ListaProveedores />} />
+            /> */}
+            {/* <Route path="/lista-proveedores" element={<ListaProveedores />} /> */}
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

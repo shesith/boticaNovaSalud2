@@ -16,7 +16,7 @@ export const AlertSquareConfirm = ({
     confirmButtonText,
     denyButtonText,
     denyButtonColor: "#fb2c36",
-    confirmButtonColor: "#51B4C3",
+    confirmButtonColor: "#848d71",
     allowOutsideClick: false,
     reverseButtons: false,
     scrollbarPadding: false,

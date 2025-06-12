@@ -3,6 +3,7 @@ import { getImageUrl } from "../utils/getImageUrl";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { AlertSquareConfirm } from "./ui/AlertSquareConfirm";
 import SouthIcon from "@mui/icons-material/South";
+import { getCredentials } from "../utils/CredentialsLocalStorage";
 
 export const Menu = ({ open, setOpen }) => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ export const Menu = ({ open, setOpen }) => {
       ></div>
 
       <nav
-        className={`bg-white md:shadow-xl w-65 top-0 left-0 h-screen fixed md:w-90 transition-transform duration-300 transform z-[1001] ${
+        className={`bg-white md:shadow-xl w-80 top-0 left-0 h-screen fixed md:w-90 transition-transform duration-300 transform z-[1001] ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -48,7 +49,10 @@ export const Menu = ({ open, setOpen }) => {
             src={getImageUrl("logo-escuela", "png")}
             alt="logo"
           />
-          <h3 className="text-[1.5rem] font-bold text-[#8c3836]">
+          <h3
+            className="text-[1.5rem] font-bold text-[#8c3836] font-inria"
+            style={{ fontFamily: '"Inria Serif", serif' }}
+          >
             MUNICIPALIDAD PROVINCIAL DE YAU
           </h3>
         </div>
@@ -76,34 +80,12 @@ export const Menu = ({ open, setOpen }) => {
               <path d="M9 21v-6a2 2 0 0 1 2 -2h2c.39 0 .754 .112 1.061 .304" />
               <path d="M19 21.5l2.518 -2.58a1.74 1.74 0 0 0 0 -2.413a1.627 1.627 0 0 0 -2.346 0l-.168 .172l-.168 -.172a1.627 1.627 0 0 0 -2.346 0a1.74 1.74 0 0 0 0 2.412l2.51 2.59z" />
             </svg>
-            Home
+            {getCredentials().tipo_usuario === "admin" ? "Dashboard" : "Home"}
           </NavLink>
-          <li className="bg-[#848d71] p-2.5 flex items-center gap-1 rounded-xl mb-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M8 21h8a1 1 0 0 0 1 -1v-10a3 3 0 0 0 -3 -3h-4a3 3 0 0 0 -3 3v10a1 1 0 0 0 1 1z" />
-              <path d="M10 14h4" />
-              <path d="M12 12v4" />
-              <path d="M10 7v-3a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v3" />
-            </svg>
-            <div className="flex items-center justify-between w-full">
-              Productos <SouthIcon />
-            </div>
-          </li>
           <NavLink
-            to="/lista-productos"
+            to="/solicitar-tramite"
             className={`bg-[#848d71] p-2.5 cursor-pointer flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50 ${
-              location.pathname === "/lista-productos" ? "bg-[#63201e]" : ""
+              location.pathname === "/solicitar-tramite" ? "bg-[#63201e]" : ""
             }`}
           >
             <svg
@@ -121,7 +103,9 @@ export const Menu = ({ open, setOpen }) => {
               <path d="M18.364 18.364a9 9 0 1 1 -12.728 -12.728a9 9 0 0 1 12.728 12.728z" />
               <path d="M16.243 7.757a6 6 0 0 1 0 8.486" />
             </svg>
-            Lista productos
+            {getCredentials().tipo_usuario === "admin"
+              ? "Gestión de Trámites"
+              : "Solicitar Trámite"}
           </NavLink>
           <NavLink
             to="/ficha-productos"
@@ -144,30 +128,11 @@ export const Menu = ({ open, setOpen }) => {
               <path d="M18.364 18.364a9 9 0 1 1 -12.728 -12.728a9 9 0 0 1 12.728 12.728z" />
               <path d="M16.243 7.757a6 6 0 0 1 0 8.486" />
             </svg>
-            Ficha productos
+            {getCredentials().tipo_usuario === "admin"
+              ? "Notificaciones automáticas"
+              : "Consultar Estado"}
           </NavLink>
-          <li className="bg-[#848d71] p-2.5  flex items-center gap-1 rounded-xl mb-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M11.5 21h-2.926a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304h11.339a2 2 0 0 1 1.977 2.304l-.5 3.248" />
-              <path d="M9 11v-5a3 3 0 0 1 6 0v5" />
-              <path d="M15 19l2 2l4 -4" />
-            </svg>
-            <div className="flex items-center justify-between w-full">
-              Ventas
-              <SouthIcon />
-            </div>
-          </li>
+
           <NavLink
             to="/lista-clientes"
             className={`bg-[#848d71] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50 ${
@@ -189,7 +154,9 @@ export const Menu = ({ open, setOpen }) => {
               <path d="M18.364 18.364a9 9 0 1 1 -12.728 -12.728a9 9 0 0 1 12.728 12.728z" />
               <path d="M16.243 7.757a6 6 0 0 1 0 8.486" />
             </svg>
-            Clientes
+            {getCredentials().tipo_usuario === "admin"
+              ? "Reportes y Análisis de Datos"
+              : "Notificaciones"}
           </NavLink>
           <NavLink
             to="/facturacion"
@@ -212,52 +179,36 @@ export const Menu = ({ open, setOpen }) => {
               <path d="M18.364 18.364a9 9 0 1 1 -12.728 -12.728a9 9 0 0 1 12.728 12.728z" />
               <path d="M16.243 7.757a6 6 0 0 1 0 8.486" />
             </svg>
-            Facturación
+            {getCredentials().tipo_usuario === "admin"
+              ? "Historial de Solicitudes"
+              : "Historial de Trámites"}
           </NavLink>
-          <li className="bg-[#848d71] p-2.5  flex items-center gap-1 rounded-xl mb-2 ">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+
+          {getCredentials().tipo_usuario === "admin" ? null : (
+            <NavLink
+              to="/facturacion"
+              className={`bg-[#848d71] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50 ${
+                location.pathname === "/facturacion" ? "bg-[#63201e]" : ""
+              }`}
             >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
-              <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
-            </svg>
-            <div className="flex items-center justify-between w-full">
-              Recepción
-              <SouthIcon />
-            </div>
-          </li>
-          <NavLink
-            to="/lista-proveedores"
-            className={`bg-[#848d71] p-2.5 flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50  ${
-              location.pathname === "/lista-proveedores" ? "bg-[#63201e]" : ""
-            }`}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M18.364 18.364a9 9 0 1 1 -12.728 -12.728a9 9 0 0 1 12.728 12.728z" />
-              <path d="M16.243 7.757a6 6 0 0 1 0 8.486" />
-            </svg>
-            Proveedores
-          </NavLink>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M18.364 18.364a9 9 0 1 1 -12.728 -12.728a9 9 0 0 1 12.728 12.728z" />
+                <path d="M16.243 7.757a6 6 0 0 1 0 8.486" />
+              </svg>
+              ChatBot
+            </NavLink>
+          )}
 
           <button
             className="w-full font-bold text-white bg-red-400 p-2.5 flex justify-center items-center gap-1 rounded-xl mt-8 cursor-pointer hover:bg-red-500 transition-all duration-300 hover:scale-105  hover:shadow-lg hover:shadow-[bg-red-500]/50"

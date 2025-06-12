@@ -9,7 +9,6 @@ html {
 }
 
 /* Loader styles */
-
 .loader {
   width: 48px;
   /* Subpixels get cut off */
@@ -17,8 +16,8 @@ html {
   transform: rotate(-90deg);
   transform-origin: center;
 
-  --active: #51b4c3;
-  --track: #8fe0ec;
+  --active: #848d71;
+  --track: #a5a7a1;
 
   --duration: 8s;
 

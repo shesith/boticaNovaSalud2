@@ -4,9 +4,11 @@ import { ListaProductos } from "../views/ListaProductos";
 import { Menu } from "./Menu";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
+import { getCredentials } from "../utils/CredentialsLocalStorage";
 
 export const RenderPrincipal = () => {
   const [open, setOpen] = useState(true);
+
   useEffect(() => {
     const innerWidth = () => {
       if (window.innerWidth > 768) {
@@ -52,15 +54,22 @@ export const RenderPrincipal = () => {
                 <path d="M4 18h10" />
               </svg>
             </button>
-            <div className="flex items-center gap-1">
+            <div className="flex justify-between items-center gap-1 w-full">
               <p className="text-white hidden md:block text-sm">
-                Administrador
+                Bienvenida(o),{" "}
+                <span className="font-bold">{getCredentials().nombre}</span>
               </p>
-              <img
-                className="w-8 ms-2"
-                src={getImageUrl("administrador-icon", "png")}
-                alt="Icono administrador"
-              />
+              <div className="flex items-center">
+                <p className="text-white hidden md:block text-sm">
+                  {getCredentials().tipo_usuario.charAt(0).toUpperCase() +
+                    getCredentials().tipo_usuario.slice(1)}
+                </p>
+                <img
+                  className="w-8 ms-2"
+                  src={getImageUrl("administrador-icon", "png")}
+                  alt="Icono administrador"
+                />
+              </div>
             </div>
           </header>
           <div className="mt-4">
