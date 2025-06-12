@@ -5,7 +5,7 @@ export const NotFound = () => {
       <h2 className="text-5xl">La página que buscas no existe</h2>
       <a
         href="/"
-        className="flex justify-center items-center gap-1 my-4 bg-[#51B4C3] text-white p-3 w-50 text-center rounded-md text-lg"
+        className="flex justify-center items-center gap-1 my-4 bg-[#ACB696] text-white p-3 w-50 text-center rounded-md text-lg"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

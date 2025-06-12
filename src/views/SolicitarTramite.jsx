@@ -147,7 +147,16 @@ export const SolicitarTramite = () => {
               {item.campo}
             </label>
 
-            {item.tipo_dato === "input" && (
+            {item.tipo_dato === "input" &&
+            item.campo.toLowerCase().includes("fecha") ? (
+              <input
+                type="date"
+                name={item.campo}
+                value={formDinamico[item.campo] || ""}
+                className="w-full p-2 border rounded-lg"
+                onChange={(e) => handleDynamicInput(item.campo, e.target.value)}
+              />
+            ) : item.tipo_dato === "input" ? (
               <input
                 type="text"
                 name={item.campo}
@@ -155,7 +164,7 @@ export const SolicitarTramite = () => {
                 className="w-full p-2 border rounded-lg"
                 onChange={(e) => handleDynamicInput(item.campo, e.target.value)}
               />
-            )}
+            ) : null}
 
             {item.tipo_dato === "número" && (
               <input

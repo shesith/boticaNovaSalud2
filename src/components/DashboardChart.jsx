@@ -78,7 +78,7 @@ const DashboardChart = () => {
   }, []);
 
   return (
-    <div>
+    <div className="">
       <h3>Predicción de Solicitudes</h3>
       {chartData ? <Line data={chartData} /> : <p>Cargando datos...</p>}
     </div>

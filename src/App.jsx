@@ -19,6 +19,7 @@ import { Notificaciones } from "./views/Notificaciones";
 import { HistorialTramites } from "./views/HistorialTramites";
 import { HistorialSolicitudes } from "./views/HistorialSolicitudes";
 import { ConsultarEstado } from "./views/ConsultarEstado";
+import { ReportesAnalisis } from "./views/ReportesAnalisis";
 
 function App() {
   const isAuthenticated = () => {
@@ -80,6 +81,7 @@ function App() {
               path="/historial-solicitudes"
               element={<HistorialSolicitudes />}
             />
+            <Route path="/analisis-reportes" element={<ReportesAnalisis />} />
 
             {/* <Route path="/lista-productos" element={<ListaProductos />} /> */}
             {/* <Route path="/ficha-productos" element={<FichaProductos />} />

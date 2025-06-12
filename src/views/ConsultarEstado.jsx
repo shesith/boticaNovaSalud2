@@ -20,7 +20,7 @@ export const ConsultarEstado = () => {
     if (response.status === 200) {
       setData(response.data);
     } else {
-      Alert("error", "Error al obtener el historial de trámites");
+      Alert("error", "Error al obtener los datos");
     }
     hideLoader();
   };
