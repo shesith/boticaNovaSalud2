@@ -8,7 +8,6 @@ import { useEffect } from "react";
 import { LoaderProvider } from "./context/loaderContext";
 import { Loader } from "./components/ui/Loader";
 import { FichaProductos } from "./views/FichaProductos";
-import Chatbot from "./components/Chatbot";
 import { ListaClientes } from "./views/ListaClientes";
 import { Facturacion } from "./views/Facturacion";
 import { AgregarFacturacion } from "./views/AgregarFacturacion";
@@ -63,8 +62,6 @@ function App() {
     <>
       <LoaderProvider>
         <Loader />
-
-        {isAuthenticated() && !isLoginPage && !isRegister && <Chatbot />}
 
         <Routes>
           <Route path="/" element={<Login />} />

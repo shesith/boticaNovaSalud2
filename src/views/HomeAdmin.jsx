@@ -1,6 +1,9 @@
 import { getImageUrl } from "../utils/getImageUrl";
 import AddIcon from "@mui/icons-material/Add";
 import { LineChart } from "@mui/x-charts/LineChart";
+import DashboardStats from "../components/DashboardStats";
+import DashboardChart from "../components/DashboardChart";
+// ...existing code...
 
 export const HomeAdmin = () => {
   return (
@@ -21,6 +24,7 @@ export const HomeAdmin = () => {
           <p className="text-[#7D7878] text-lg text-center md:text-left mb-6 md:mb-0 absolute top-4 left-4">
             Estadísticas
           </p>
+          <DashboardStats />
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 xl:gap-20 mt-8">
             <div className="flex items-center gap-4">
               <img
@@ -70,18 +74,9 @@ export const HomeAdmin = () => {
       </div>
 
       <div className="flex flex-col md:flex-row gap-4">
+        {/* Aquí agregamos el DashboardChart */}
         <div className="w-full bg-white p-6 rounded-2xl shadow-md">
-          <p>Ventas</p>
-
-          <LineChart
-            xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
-            series={[
-              {
-                data: [2, 5.5, 2, 8.5, 1.5, 5],
-              },
-            ]}
-            height={300}
-          />
+          <DashboardChart />
         </div>
 
         <div className="relative md:w-fit h-64 rounded-lg overflow-hidden cursor-pointer group shadow-md">
