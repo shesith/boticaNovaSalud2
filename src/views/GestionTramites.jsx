@@ -3,8 +3,10 @@ import DataTable from "react-data-table-component";
 import { useLoader } from "../context/loaderContext";
 import { Alert } from "../components/ui/Alert";
 import { services } from "../service/api";
+import { useNavigate } from "react-router-dom";
 
 export const GestionTramites = () => {
+  const navigate = useNavigate();
   const { showLoader, hideLoader } = useLoader();
   const [data, setData] = useState({
     dataTramites: [],
@@ -120,10 +122,8 @@ export const GestionTramites = () => {
     if (response.status === 200) {
       Alert(
         "success",
-        response.data.mensaje || "Estatus actualizado correctamente"
+        "Estatus actualizado correctamente, se envio una notificación al usuario"
       );
-
-      getDataTramites();
     } else {
       Alert("error", response.data.mensaje || "Error al actualizar el estatus");
     }

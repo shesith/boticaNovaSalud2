@@ -115,36 +115,37 @@ export const Menu = ({ open, setOpen }) => {
               ? "Gestión de Trámites"
               : "Solicitar Trámite"}
           </NavLink>
-          <NavLink
-            to="/ficha-productos"
-            className={`bg-[#848d71] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50 ${
-              location.pathname === "/ficha-productos" ? "bg-[#63201e]" : ""
-            }`}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+
+          {getCredentials().tipo_usuario === "admin" ? null : (
+            <NavLink
+              to="/ficha-productos"
+              className={`bg-[#848d71] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50 ${
+                location.pathname === "/ficha-productos" ? "bg-[#63201e]" : ""
+              }`}
             >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M18.364 18.364a9 9 0 1 1 -12.728 -12.728a9 9 0 0 1 12.728 12.728z" />
-              <path d="M16.243 7.757a6 6 0 0 1 0 8.486" />
-            </svg>
-            {getCredentials().tipo_usuario === "admin"
-              ? "Notificaciones automáticas"
-              : "Consultar Estado"}
-          </NavLink>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M18.364 18.364a9 9 0 1 1 -12.728 -12.728a9 9 0 0 1 12.728 12.728z" />
+                <path d="M16.243 7.757a6 6 0 0 1 0 8.486" />
+              </svg>
+              Consultar Estado
+            </NavLink>
+          )}
 
           <NavLink
-            to="/lista-clientes"
+            to="/notificaciones"
             className={`bg-[#848d71] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50 ${
-              location.pathname === "/lista-clientes" ? "bg-[#63201e]" : ""
+              location.pathname === "/notificaciones" ? "bg-[#63201e]" : ""
             }`}
           >
             <svg
