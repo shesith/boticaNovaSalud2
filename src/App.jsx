@@ -16,6 +16,9 @@ import { RegistroUsuario } from "./views/RegistroUsuario";
 import { SolicitarTramite } from "./views/solicitarTramite";
 import { GestionTramites } from "./views/GestionTramites";
 import { Notificaciones } from "./views/Notificaciones";
+import { HistorialTramites } from "./views/HistorialTramites";
+import { HistorialSolicitudes } from "./views/HistorialSolicitudes";
+import { ConsultarEstado } from "./views/ConsultarEstado";
 
 function App() {
   const isAuthenticated = () => {
@@ -71,6 +74,12 @@ function App() {
             <Route path="/solicitar-tramite" element={<SolicitarTramite />} />
             <Route path="/gestion-tramites" element={<GestionTramites />} />
             <Route path="/notificaciones" element={<Notificaciones />} />
+            <Route path="/historial-tramites" element={<HistorialTramites />} />
+            <Route path="/consultar-estado" element={<ConsultarEstado />} />
+            <Route
+              path="/historial-solicitudes"
+              element={<HistorialSolicitudes />}
+            />
 
             {/* <Route path="/lista-productos" element={<ListaProductos />} /> */}
             {/* <Route path="/ficha-productos" element={<FichaProductos />} />

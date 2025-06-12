@@ -118,9 +118,9 @@ export const Menu = ({ open, setOpen }) => {
 
           {getCredentials().tipo_usuario === "admin" ? null : (
             <NavLink
-              to="/ficha-productos"
+              to="/consultar-estado"
               className={`bg-[#848d71] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50 ${
-                location.pathname === "/ficha-productos" ? "bg-[#63201e]" : ""
+                location.pathname === "/consultar-estado" ? "bg-[#63201e]" : ""
               }`}
             >
               <svg
@@ -168,9 +168,17 @@ export const Menu = ({ open, setOpen }) => {
               : "Notificaciones"}
           </NavLink>
           <NavLink
-            to="/facturacion"
-            className={`bg-[#848d71] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50 ${
-              location.pathname === "/facturacion" ? "bg-[#63201e]" : ""
+            to={`${
+              getCredentials().tipo_usuario === "admin"
+                ? "/historial-solicitudes"
+                : "/historial-tramites"
+            }`}
+            className={`bg-[#848d71] p-2.5  flex items-center gap-1 rounded-xl mb-2 hover:bg-[#acb696] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#acb696]/50  ${
+              ["/historial-solicitudes", "/historial-tramites"].includes(
+                location.pathname
+              )
+                ? "bg-[#63201e]"
+                : ""
             }`}
           >
             <svg
